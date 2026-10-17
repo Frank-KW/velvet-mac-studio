@@ -9,6 +9,79 @@ export const languageLabels: Record<Language, string> = {
 };
 
 const ja: Record<string, string> = {
+  "Update Abyss keymap": "Abyss のキーマップを更新",
+  "Module settings for new layers require Keymap to be selected.":
+    "新しいレイヤーのモジュール設定を転送するには、キーマップも選択してください。",
+  // Keymap sharing preview
+  "Save/share keymap": "キーマップ保存/共有",
+  "Keyboard Abyss is a keymap sharing service developed by @cormoran707, the developer of DYA Studio.":
+    "Keyboard Abyss は、DYA Studio 開発者の @cormoran707 が開発しているキーマップ共有サービスです。",
+  "Refresh your keymaps": "自分のキーマップを更新",
+  "Preview {{name}}": "{{name}} をプレビュー",
+  "Preview format": "プレビュー形式",
+  "Keymap preview": "キーマッププレビュー",
+  "Code diff": "コード差分",
+  "Preview direction": "比較の方向",
+  "Apply from Abyss to keyboard": "Abyss からキーボードに適用",
+  "Upload from keyboard to Abyss": "キーボードから Abyss にアップロード",
+  Changes: "変更一覧",
+  "Filter changes by layer": "変更をレイヤーで絞り込む",
+  "Compare the Abyss keymap with the keyboard settings to save.":
+    "Abyss のキーマップと、保存するキーボードの設定を比較します。",
+  "Compare the current keyboard with the keymap to apply.":
+    "現在のキーボードと、適用するキーマップを比較します。",
+  "Replace the keyboard settings with this keymap and save them to the keyboard.":
+    "このキーマップをキーボードに適用し、キーボード本体に保存します。",
+  "Update this Abyss keymap with the keyboard's current settings as a new version.":
+    "現在のキーボードの設定で、この Abyss キーマップを新しいバージョンとして更新します。",
+
+  // Keymap sharing
+  "Keymap sharing": "キーマップ共有",
+  "Apply {{name}}": "{{name}} を適用",
+  "Save to {{name}}": "{{name}} に保存",
+  "Current keymap": "現在のキーマップ",
+  "Your keymaps": "自分のキーマップ",
+  "In sync": "同期済み",
+  "This keyboard cannot identify its current keymap. Keymap identity RPC is not supported.":
+    "このキーボードはキーマップ識別 RPC に未対応のため、現在のキーマップを判定できません。",
+  "No keymap identity is stored on this keyboard.":
+    "このキーボードにはキーマップの識別情報が保存されていません。",
+  "The current keymap could not be identified.":
+    "現在のキーマップを判定できませんでした。",
+  "No keymaps for this keyboard.": "このキーボードのキーマップはありません。",
+  "Find on Abyss": "Abyss で探す",
+  "Save new to Abyss": "Abyss に新規保存",
+  "Save to file": "ファイルに保存",
+  "Apply from file": "ファイルから反映",
+  "Apply keymap": "キーマップを適用",
+  "Left: what is on the keyboard now. Right: the keymap to apply.":
+    "左：現在のキーボードの内容。右：適用するキーマップ。",
+  "Applying writes and saves to the keyboard immediately. Partial failures may leave mixed settings.":
+    "適用すると、キーボードに直ちに書き込み・保存します。途中で失敗した場合、設定が一部だけ反映されることがあります。",
+  "Save to Abyss": "Abyss に保存",
+  "Apply to keyboard": "キーボードに反映",
+  "Save the keyboard's current settings as a new Abyss keymap.":
+    "現在のキーボードの設定を、新しいキーマップとして Abyss に保存します。",
+  "The keymap file is too large (maximum 5 MB).":
+    "キーマップファイルが大きすぎます（最大 5 MB）。",
+  "This file is not a valid KeyboardHub keymap.":
+    "有効な KeyboardHub 形式のキーマップではありません。",
+  "Saved to Abyss.": "Abyss に保存しました。",
+  "Applied to keyboard.": "キーボードに適用しました。",
+  "The keyboard or account changed. Reopen Keymap sharing.":
+    "キーボードまたはアカウントが変わりました。キーマップ保存/共有を開き直してください。",
+  "No keyboard connected.": "キーボードが接続されていません。",
+  "Keymap data unavailable": "キーマップデータを取得できません。",
+  "The keymap was saved, but its identity could not be stored. Refresh to check the keyboard.":
+    "キーマップは保存されましたが、識別情報を保存できませんでした。更新してキーボードの状態を確認してください。",
+  "The keymap identity could not be verified. Refresh to check the keyboard.":
+    "キーマップの識別情報を確認できませんでした。更新してキーボードの状態を確認してください。",
+  "The keyboard changed. Close this preview and open it again.":
+    "キーボードの内容が変わりました。プレビューを閉じ、開き直して差分を確認してください。",
+  "The Abyss keymap changed. Close this preview and open it again.":
+    "Abyss のキーマップが変わりました。プレビューを閉じ、開き直して差分を確認してください。",
+  "The keyboard does not yet match this keymap. Review and try again.":
+    "キーボードの内容がキーマップと一致していません。状態を確認して再試行してください。",
   "Could not open the keyboard connection.\nAnother DYA Studio tab or app may be using it.\nDisconnect or close that tab or app, then try again.\nIf it still fails, check the device permissions and reconnect the USB cable.":
     "キーボードへの接続を開けませんでした。\n別のタブの DYA Studio や他のアプリが使用している可能性があります。\n接続中のタブやアプリで切断するか、閉じてからもう一度お試しください。\n解決しない場合は、デバイスへのアクセス権限を確認し、USB ケーブルを接続し直してください。",
   "The keyboard did not respond in time.\nCheck the connection and that ZMK Studio is enabled on the keyboard, then try again.":
@@ -1583,8 +1656,8 @@ const ja: Record<string, string> = {
   "The keyboard is locked. Unlock it and try again.":
     "キーボードがロックされています。ロックを解除して再試行してください。",
   "Abyss login was cancelled.": "Abyss のサインインがキャンセルされました。",
-  "Abyss sign-in could not be completed. Please start again from the Import/Export tab.":
-    "Abyss のサインインを完了できませんでした。インポート／エクスポートタブからやり直してください。",
+  "Abyss sign-in could not be completed. Please start again from Keymap sharing.":
+    "Abyss のサインインを完了できませんでした。キーマップページからやり直してください。",
   "Something went wrong talking to Abyss.":
     "Abyss との通信で問題が発生しました。",
   "Abyss is not configured for this build.":
@@ -1592,6 +1665,31 @@ const ja: Record<string, string> = {
 };
 
 const zh: Record<string, string> = {
+  "Module settings for new layers require Keymap to be selected.":
+    "传输新层的模块设置需要同时选择键位映射。",
+  // Keymap sharing preview
+  "Save/share keymap": "保存/分享键位",
+  "Keyboard Abyss is a keymap sharing service developed by @cormoran707, the developer of DYA Studio.":
+    "Keyboard Abyss 是由 DYA Studio 开发者 @cormoran707 开发的键位分享服务。",
+  "Refresh your keymaps": "刷新我的键位",
+  "Preview {{name}}": "预览 {{name}}",
+  "Preview format": "预览格式",
+  "Keymap preview": "键位预览",
+  "Code diff": "代码差异",
+  "Update Abyss keymap": "更新 Abyss 键位映射",
+  "Preview direction": "比较方向",
+  "Apply from Abyss to keyboard": "从 Abyss 应用到键盘",
+  "Upload from keyboard to Abyss": "从键盘上传到 Abyss",
+  Changes: "更改列表",
+  "Filter changes by layer": "按层筛选更改",
+  "Compare the Abyss keymap with the keyboard settings to save.":
+    "比较 Abyss 键位与要保存的键盘设置。",
+  "Compare the current keyboard with the keymap to apply.":
+    "比较当前键盘与要应用的键位。",
+  "Replace the keyboard settings with this keymap and save them to the keyboard.":
+    "将此键位应用到键盘并保存到键盘。",
+  "Update this Abyss keymap with the keyboard's current settings as a new version.":
+    "使用键盘的当前设置将此 Abyss 键位更新为新版本。",
   "Could not open the keyboard connection.\nAnother DYA Studio tab or app may be using it.\nDisconnect or close that tab or app, then try again.\nIf it still fails, check the device permissions and reconnect the USB cable.":
     "无法打开键盘连接。\n其他 DYA Studio 标签页或应用可能正在使用它。\n请断开连接或关闭该标签页或应用后重试。\n如果仍然失败，请检查设备访问权限并重新插拔 USB 线。",
   "The keyboard did not respond in time.\nCheck the connection and that ZMK Studio is enabled on the keyboard, then try again.":
@@ -3065,7 +3163,7 @@ const zh: Record<string, string> = {
   "The keyboard is locked. Unlock it and try again.":
     "键盘已锁定。请解锁后重试。",
   "Abyss login was cancelled.": "Abyss 登录已取消。",
-  "Abyss sign-in could not be completed. Please start again from the Import/Export tab.":
+  "Abyss sign-in could not be completed. Please start again from Keymap sharing.":
     "无法完成 Abyss 登录。请从导入/导出选项卡重新开始。",
   "Something went wrong talking to Abyss.": "与 Abyss 通信时出现问题。",
   "Abyss is not configured for this build.": "此构建未配置 Abyss。",
