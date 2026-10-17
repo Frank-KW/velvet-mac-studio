@@ -9,6 +9,14 @@ export const languageLabels: Record<Language, string> = {
 };
 
 const ja: Record<string, string> = {
+  "Could not open the keyboard connection.\nAnother DYA Studio tab or app may be using it.\nDisconnect or close that tab or app, then try again.\nIf it still fails, check the device permissions and reconnect the USB cable.":
+    "キーボードへの接続を開けませんでした。\n別のタブの DYA Studio や他のアプリが使用している可能性があります。\n接続中のタブやアプリで切断するか、閉じてからもう一度お試しください。\n解決しない場合は、デバイスへのアクセス権限を確認し、USB ケーブルを接続し直してください。",
+  "The keyboard did not respond in time.\nCheck the connection and that ZMK Studio is enabled on the keyboard, then try again.":
+    "キーボードからの応答がなく、接続がタイムアウトしました。\n接続状態とキーボードの ZMK Studio が有効になっていることを確認し、もう一度お試しください。",
+  "Could not connect to the keyboard.\nCheck the connection and browser permissions, then try again.\nSee error details for more information.":
+    "キーボードに接続できませんでした。\n接続状態とブラウザのアクセス権限を確認し、もう一度お試しください。\n詳しい原因は「エラーの詳細」で確認できます。",
+  "Error details": "エラーの詳細",
+
   "Inertia simulation": "慣性シミュレーション",
   "Five-second input and simulated output": "5秒の入力とシミュレーション出力",
   "Example input peak before scaling": "スケーリング前の想定入力の最大値",
@@ -1584,6 +1592,14 @@ const ja: Record<string, string> = {
 };
 
 const zh: Record<string, string> = {
+  "Could not open the keyboard connection.\nAnother DYA Studio tab or app may be using it.\nDisconnect or close that tab or app, then try again.\nIf it still fails, check the device permissions and reconnect the USB cable.":
+    "无法打开键盘连接。\n其他 DYA Studio 标签页或应用可能正在使用它。\n请断开连接或关闭该标签页或应用后重试。\n如果仍然失败，请检查设备访问权限并重新插拔 USB 线。",
+  "The keyboard did not respond in time.\nCheck the connection and that ZMK Studio is enabled on the keyboard, then try again.":
+    "键盘未及时响应，连接已超时。\n请检查连接并确认键盘已启用 ZMK Studio，然后重试。",
+  "Could not connect to the keyboard.\nCheck the connection and browser permissions, then try again.\nSee error details for more information.":
+    "无法连接键盘。\n请检查连接和浏览器访问权限后重试。\n更多信息请查看错误详情。",
+  "Error details": "错误详情",
+
   "Inertia simulation": "惯性模拟",
   "Five-second input and simulated output": "5秒输入及模拟输出",
   "Example input peak before scaling": "缩放前的示例输入峰值",
