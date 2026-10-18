@@ -342,6 +342,38 @@
 }
 
 @media (max-width: 639px) {
+  .page-header {
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+  }
+
+  .page-header:has(.page-header-actions) {
+    justify-content: flex-end;
+  }
+
+  .page-header:has(.page-header-actions) > :first-child {
+    margin-right: auto;
+  }
+
+  .page-header-description {
+    display: none;
+  }
+
+  .page-header-actions {
+    display: contents;
+  }
+
+  .page-header-secondary-action {
+    order: 1;
+  }
+
+  .page-header-selector {
+    order: 2;
+    flex-basis: 100%;
+  }
+
   .responsive-action {
     min-width: 2.75rem;
     min-height: 2.75rem;
