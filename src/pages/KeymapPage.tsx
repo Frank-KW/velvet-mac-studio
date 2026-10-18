@@ -8,13 +8,14 @@ import {
   useMemo,
   useEffect,
   useRef,
+  useLayoutEffect,
 } from "react";
 import {
   IconKeyboard,
   IconChevronLeft,
   IconChevronRight,
   IconArrowsMaximize,
-  IconWindow,
+  IconAppWindow,
   IconPlayerTrackNext,
   IconDeviceFloppy,
   IconAlertCircle,
@@ -68,6 +69,7 @@ import { formatBehaviorBinding } from "../lib/behaviorMetadata";
 import { ResetVersionMenu } from "../components/versionHistory/ResetVersionMenu";
 import { VersionDiffModal } from "../components/versionHistory/VersionDiffModal";
 import { useKeymapVersionHistory } from "../hooks/versionHistory/useKeymapVersionHistory";
+import { useMobileLayout } from "../hooks/useMobileLayout";
 import { useIsTabActive } from "../hooks/useIsTabActive";
 import type { FloatingWindowPosition } from "../hooks/useFloatingWindow";
 import "./keymap.css";
@@ -91,6 +93,8 @@ export function KeymapPage() {
   // "restore a previous version" flow behind the reset dropdown.
   const versionHistory = useKeymapVersionHistory(keymap, t);
   const isTabActive = useIsTabActive();
+  const mobile = useMobileLayout();
+  const pageRef = useRef<HTMLDivElement>(null);
   // Proactive lock state: the fast-keymap subsystem is unsecured, so the keymap
   // is viewable while Studio is locked. We use this to (a) show a lock badge in
   // place of Save/Reset and (b) prompt for unlock the moment the user tries to
@@ -102,12 +106,12 @@ export function KeymapPage() {
 
   const [selectorMode, setSelectorMode] = useState<"modal" | "floating">(() => {
     try {
-      return localStorage.getItem("keymapSelectorMode") === "floating"
-        ? "floating"
-        : "modal";
+      const savedMode = localStorage.getItem("keymapSelectorMode");
+      if (savedMode === "floating" || savedMode === "modal") return savedMode;
     } catch {
-      return "modal";
+      // Use the viewport default when preferences cannot be read.
     }
+    return mobile ? "floating" : "modal";
   });
   const [autoAdvance, setAutoAdvance] = useState(() => {
     try {
@@ -726,11 +730,52 @@ export function KeymapPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTabActive]);
 
+  const sheetOpen =
+    selectorMode === "floating" &&
+    isTabActive &&
+    connection.isConnected &&
+    (showKeycodeSelector || showComboBindingSelector);
+  useLayoutEffect(() => {
+    if (sheetOpen && mobile && pageRef.current) pageRef.current.scrollTop = 0;
+  }, [sheetOpen, mobile]);
+
+  useLayoutEffect(() => {
+    if (
+      !sheetOpen ||
+      !showKeycodeSelector ||
+      !autoAdvance ||
+      selectedKeyPosition === null
+    )
+      return;
+    // Reveal only as far as needed in each scrollable ancestor, including the
+    // preview's horizontal scroller and the workspace above a mobile sheet.
+    // Do not focus the preview or queue scroll animations.
+    pageRef.current
+      ?.querySelector<HTMLElement>(
+        `[data-key-position="${selectedKeyPosition}"]`,
+      )
+      ?.scrollIntoView?.({
+        block: "nearest",
+        inline: "nearest",
+        behavior: "instant",
+      });
+  }, [
+    sheetOpen,
+    showKeycodeSelector,
+    autoAdvance,
+    selectedKeyPosition,
+    mobile,
+  ]);
+
   return (
-    <div className="keymap-page app-page p-4 sm:p-6 h-full">
+    <div
+      ref={pageRef}
+      data-mobile-sheet-open={sheetOpen}
+      className="keymap-page app-page p-4 sm:p-6 h-full"
+    >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="page-header flex flex-wrap items-center justify-between gap-x-6 gap-y-4 mb-6">
+        <div className="keymap-before-layers page-header flex flex-wrap items-center justify-between gap-x-6 gap-y-4 mb-6">
           <div className="flex items-center gap-3">
             <div className="hidden sm:block p-2 rounded-lg bg-[var(--color-electric)]/10 border border-[var(--color-electric)]/20">
               <IconKeyboard
@@ -859,7 +904,7 @@ export function KeymapPage() {
 
         {/* Not Connected State */}
         {!connection.isConnected && (
-          <div className="glass-card p-6 text-center">
+          <div className="keymap-before-layers glass-card p-6 text-center">
             <p className="text-sm text-[var(--color-text-muted)]">
               {t("Connect your keyboard to edit keymaps")}
             </p>
@@ -870,7 +915,7 @@ export function KeymapPage() {
         {keymap.error && (
           <div
             role="alert"
-            className="glass-card p-4 mb-4 border-red-500/20 bg-red-500/10 flex items-center gap-3"
+            className="keymap-before-layers glass-card p-4 mb-4 border-red-500/20 bg-red-500/10 flex items-center gap-3"
           >
             <IconAlertCircle size={20} className="text-red-400" />
             <p className="text-sm text-red-400">{t(keymap.error)}</p>
@@ -879,7 +924,7 @@ export function KeymapPage() {
         {inputStream.error && (
           <div
             role="alert"
-            className="glass-card p-4 mb-4 border-red-500/20 bg-red-500/10 flex items-center gap-3"
+            className="keymap-before-layers glass-card p-4 mb-4 border-red-500/20 bg-red-500/10 flex items-center gap-3"
           >
             <IconAlertCircle size={20} className="text-red-400" />
             <p className="text-sm text-red-400">{t(inputStream.error)}</p>
@@ -894,7 +939,7 @@ export function KeymapPage() {
         {/* Loading State */}
         {connection.isConnected && keymap.isLoading && (
           <LoadingIndicator
-            className="mb-6"
+            className="keymap-before-layers mb-6"
             label={getKeymapLoadingLabel(t, keymap.loadingProgress)}
             current={keymap.loadingProgress?.current}
             total={keymap.loadingProgress?.total}
@@ -1732,16 +1777,21 @@ export function KeymapPage() {
             ) : (
               <EditorTooltip
                 content={t(
-                  "Edit beside the keyboard preview while keeping it visible",
+                  mobile
+                    ? "Edit in a bottom sheet below the keyboard preview"
+                    : "Edit beside the keyboard preview while keeping it visible",
                 )}
               >
                 <button
                   type="button"
-                  className="p-1 rounded hover:bg-[var(--color-border)]"
-                  aria-label={t("Floating mode")}
+                  className="inline-flex items-center gap-1.5 p-1 sm:px-2 rounded hover:bg-[var(--color-border)]"
+                  aria-label={t(mobile ? "Sheet mode" : "Floating mode")}
                   onClick={() => setSelectorMode("floating")}
                 >
-                  <IconWindow size={16} />
+                  <IconAppWindow size={16} />
+                  <span className="hidden whitespace-nowrap text-xs sm:inline">
+                    {t("Floating mode")}
+                  </span>
                 </button>
               </EditorTooltip>
             )}
@@ -1791,9 +1841,12 @@ export function KeymapPage() {
                     aria-pressed={autoAdvance}
                     disabled={isApplyingBinding}
                     onClick={() => setAutoAdvance(!autoAdvance)}
-                    className={`p-1 rounded disabled:opacity-40 ${autoAdvance ? "bg-[var(--color-electric)]/15 text-[var(--color-electric)]" : "text-[var(--color-text-muted)] hover:bg-[var(--color-border)]"}`}
+                    className={`inline-flex items-center gap-1.5 p-1 sm:px-2 rounded disabled:opacity-40 ${autoAdvance ? "bg-[var(--color-electric)]/15 text-[var(--color-electric)]" : "text-[var(--color-text-muted)] hover:bg-[var(--color-border)]"}`}
                   >
                     <IconPlayerTrackNext size={16} />
+                    <span className="hidden whitespace-nowrap text-xs sm:inline">
+                      {t("Auto advance")}
+                    </span>
                   </button>
                 </EditorTooltip>
                 <EditorTooltip content={t("Edit the previous key")}>
@@ -1847,19 +1900,24 @@ export function KeymapPage() {
           ) : (
             <EditorTooltip
               content={t(
-                "Edit beside the keyboard preview while keeping it visible",
+                mobile
+                  ? "Edit in a bottom sheet below the keyboard preview"
+                  : "Edit beside the keyboard preview while keeping it visible",
               )}
             >
               <button
                 type="button"
-                className="p-1 rounded hover:bg-[var(--color-border)]"
-                aria-label={t("Floating mode")}
+                className="inline-flex items-center gap-1.5 p-1 sm:px-2 rounded hover:bg-[var(--color-border)]"
+                aria-label={t(mobile ? "Sheet mode" : "Floating mode")}
                 onClick={() => {
                   selectionRevision.current += 1;
                   setSelectorMode("floating");
                 }}
               >
-                <IconWindow size={16} />
+                <IconAppWindow size={16} />
+                <span className="hidden whitespace-nowrap text-xs sm:inline">
+                  {t("Floating mode")}
+                </span>
               </button>
             </EditorTooltip>
           )

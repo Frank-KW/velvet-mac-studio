@@ -410,9 +410,87 @@ describe("KeymapPage", () => {
       await user.click(
         screen.getAllByRole("button", { name: /Key position \d+:/ })[0],
       );
-      await user.click(screen.getByRole("button", { name: "Floating mode" }));
+      const modeSwitch = screen.queryByRole("button", {
+        name: /^(Floating|Sheet) mode$/,
+      });
+      if (modeSwitch) await user.click(modeSwitch);
       return { user, setBinding };
     };
+
+    it.each([
+      [true, null, "sheet"],
+      [true, "modal", "modal"],
+      [true, "floating", "sheet"],
+      [false, null, "modal"],
+      [false, "modal", "modal"],
+      [false, "floating", "floating"],
+    ] as const)(
+      "initializes mobile=%s with saved mode=%s as %s",
+      async (mobile, savedMode, expected) => {
+        const originalMatchMedia = window.matchMedia;
+        window.matchMedia = jest.fn((query: string) => ({
+          ...originalMatchMedia(query),
+          matches: query === "(max-width: 639px)" && mobile,
+        }));
+        if (savedMode !== null)
+          localStorage.setItem("keymapSelectorMode", savedMode);
+        try {
+          const user = userEvent.setup();
+          const setBinding = jest.fn();
+          renderComponent(
+            { isConnected: true },
+            {
+              keymap: mockKeymap,
+              physicalLayouts: mockPhysicalLayouts,
+              setBinding,
+            },
+          );
+          await user.click(
+            screen.getAllByRole("button", { name: /Key position \d+:/ })[0],
+          );
+          expect(screen.getByRole("dialog")).toHaveAttribute(
+            "data-presentation",
+            expected,
+          );
+          expect(localStorage.getItem("keymapSelectorMode")).toBe(
+            expected === "sheet" ? "floating" : expected,
+          );
+          expect(setBinding).not.toHaveBeenCalled();
+        } finally {
+          window.matchMedia = originalMatchMedia;
+        }
+      },
+    );
+
+    it("releases the mobile sheet workspace when switching to a dialog or closing", async () => {
+      const originalMatchMedia = window.matchMedia;
+      window.matchMedia = jest.fn((query: string) => ({
+        ...originalMatchMedia(query),
+        matches: query === "(max-width: 639px)",
+      }));
+      try {
+        const { user, setBinding } = await setup();
+        const page = document.querySelector(".keymap-page")!;
+        expect(screen.getByRole("dialog")).toHaveAttribute(
+          "data-presentation",
+          "sheet",
+        );
+        expect(page).toHaveAttribute("data-mobile-sheet-open", "true");
+        await user.click(screen.getByRole("button", { name: "Dialog mode" }));
+        expect(page).toHaveAttribute("data-mobile-sheet-open", "false");
+        await user.click(screen.getByRole("button", { name: "Sheet mode" }));
+        expect(page).toHaveAttribute("data-mobile-sheet-open", "true");
+        await user.click(
+          screen.getByRole("button", {
+            name: "Close without applying unfinished edits",
+          }),
+        );
+        expect(page).toHaveAttribute("data-mobile-sheet-open", "false");
+        expect(setBinding).not.toHaveBeenCalled();
+      } finally {
+        window.matchMedia = originalMatchMedia;
+      }
+    });
 
     it("applies once, advances through every key, and closes at the end", async () => {
       const { user, setBinding } = await setup();
@@ -441,7 +519,7 @@ describe("KeymapPage", () => {
             65 + position,
           )}`,
         );
-        expect(screen.getByText("Press a key")).toBeInTheDocument();
+        expect(screen.queryByText("Press a key")).not.toBeInTheDocument();
         expect(
           screen.queryByText(/Base · Key \d+ \/ 3/),
         ).not.toBeInTheDocument();
@@ -463,6 +541,39 @@ describe("KeymapPage", () => {
         });
       }
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+
+    it("reveals the next selected key with minimal scrolling only while auto advance is on", async () => {
+      const { user } = await setup();
+      const keys = screen.getAllByRole("button", { name: /Key position \d+:/ });
+      const revealNext = jest.fn();
+      const revealLast = jest.fn();
+      keys[1].scrollIntoView = revealNext;
+      keys[2].scrollIntoView = revealLast;
+      await user.click(screen.getByRole("button", { name: "B", exact: true }));
+      expect(keys[1]).toHaveAttribute("aria-current", "true");
+      expect(revealNext).toHaveBeenCalledWith({
+        block: "nearest",
+        inline: "nearest",
+        behavior: "instant",
+      });
+      expect(revealLast).not.toHaveBeenCalled();
+      await user.click(screen.getByRole("button", { name: "Auto advance" }));
+      revealNext.mockClear();
+      await user.click(screen.getByRole("button", { name: "A", exact: true }));
+      expect(keys[1]).toHaveAttribute("aria-current", "true");
+      expect(revealNext).not.toHaveBeenCalled();
+      expect(revealLast).not.toHaveBeenCalled();
+    });
+
+    it("does not reveal a next key after a failed binding application", async () => {
+      const { user } = await setup(jest.fn().mockResolvedValue(false));
+      const keys = screen.getAllByRole("button", { name: /Key position \d+:/ });
+      const revealNext = jest.fn();
+      keys[1].scrollIntoView = revealNext;
+      await user.click(screen.getByRole("button", { name: "B", exact: true }));
+      expect(keys[0]).toHaveAttribute("aria-current", "true");
+      expect(revealNext).not.toHaveBeenCalled();
     });
 
     it("advances on keycode and parameterless behavior selection without closing", async () => {
