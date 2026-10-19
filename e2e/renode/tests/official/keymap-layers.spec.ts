@@ -66,6 +66,9 @@ test.describe("dya-studio Keymap: layer management over official ZMK core RPCs",
     await expect(handle).toHaveAttribute("aria-disabled", "false");
     await handle.press("ArrowRight");
     await expectLayerOrder(page, BASE_LAYERS);
+    await page
+      .getByRole("button", { name: "Finish editing", exact: true })
+      .click();
   });
 
   test("renames a layer via keymap.setLayerProps", async ({ page }) => {
@@ -95,13 +98,17 @@ test.describe("dya-studio Keymap: layer management over official ZMK core RPCs",
     ).toBeVisible();
 
     // Rename back to "Base" so the device is left at baseline (net-zero).
+    // Edit-mode layer buttons are not selectors; target the named action.
     await page
-      .getByRole("button", { name: "Rename layer Symbols", exact: true })
+      .getByRole("button", { name: `Rename layer ${NEW_NAME}`, exact: true })
       .click();
     await dialog.getByPlaceholder("Layer name").fill("Base");
     await dialog.getByRole("button", { name: "Rename", exact: true }).click();
     await expect(dialog).toBeHidden();
     await expectLayerOrder(page, BASE_LAYERS);
+    await page
+      .getByRole("button", { name: "Finish editing", exact: true })
+      .click();
   });
 
   test("deletes a layer then restores it (keymap.removeLayer + restoreLayer)", async ({
@@ -136,6 +143,9 @@ test.describe("dya-studio Keymap: layer management over official ZMK core RPCs",
 
     // restoreLayer brought "Adjust" back at the end, name preserved → baseline.
     await expectLayerOrder(page, BASE_LAYERS);
+    await page
+      .getByRole("button", { name: "Finish editing", exact: true })
+      .click();
   });
 
   test("physical-layout selector reflects the single layout this DUT exposes", async ({
