@@ -244,8 +244,6 @@ function AppContent() {
                 onConnect={connection.onConnect}
                 isConnecting={connection.isLoading}
                 error={connection.error}
-                onShowReleaseNotes={() => navigatePath(RELEASE_NOTES_PATH)}
-                onShowDeveloperGuide={() => navigatePath(DEVELOPER_GUIDE_PATH)}
               />
             </motion.div>
           )

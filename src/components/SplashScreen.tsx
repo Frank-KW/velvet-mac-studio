@@ -1,46 +1,18 @@
 import { motion } from "framer-motion";
 import { IconBluetooth, IconUsb, IconDeviceDesktop } from "@tabler/icons-react";
 import { useState, useCallback } from "react";
-import type { MouseEvent } from "react";
 import type { ConnectionMethod } from "../contexts/DeviceConnectionContext";
 import { ConnectionNoticeDialog } from "./ConnectionNoticeDialog";
 import { hasAcceptedNotice } from "../lib/connectionNoticeStorage";
 import { LanguageToggle } from "./LanguageToggle";
 import { ThemeSelect } from "./ThemeSelect";
 import { useLanguage } from "../hooks/useLanguage";
-import { getCurrentVersion } from "../i18n/releaseNotes";
-import { EditorTooltip } from "./EditorTooltip";
 import { connectionErrorMessage } from "../lib/connectionError";
-import { useTheme } from "../hooks/useTheme";
-import githubMarkBlack from "../assets/github/GitHub_Invertocat_Black.svg";
-import githubMarkWhite from "../assets/github/GitHub_Invertocat_White.svg";
-import maintainerAvatar from "../assets/maintainer/cormoran707.jpg";
 
 interface SplashScreenProps {
   onConnect: (method: ConnectionMethod) => void;
   isConnecting: boolean;
   error: string | null;
-  /** Navigate to the standalone release notes page. */
-  onShowReleaseNotes: () => void;
-  /** Navigate to the connection-free keyboard developer guide. */
-  onShowDeveloperGuide: () => void;
-}
-
-/** Preserve native link actions while keeping ordinary clicks in the SPA. */
-function navigateLink(
-  event: MouseEvent<HTMLAnchorElement>,
-  navigate: () => void,
-) {
-  if (
-    event.button !== 0 ||
-    event.metaKey ||
-    event.ctrlKey ||
-    event.shiftKey ||
-    event.altKey
-  )
-    return;
-  event.preventDefault();
-  navigate();
 }
 
 function LoadingDots() {
@@ -78,12 +50,8 @@ export function SplashScreen({
   onConnect,
   isConnecting,
   error,
-  onShowReleaseNotes,
-  onShowDeveloperGuide,
 }: SplashScreenProps) {
   const { t } = useLanguage();
-  const { theme } = useTheme();
-  const version = getCurrentVersion();
   // Dialog state
   const [showNotice, setShowNotice] = useState(false);
   const [pendingMethod, setPendingMethod] = useState<ConnectionMethod | null>(
@@ -261,24 +229,6 @@ export function SplashScreen({
               </div>
             </div>
           </div>
-
-          {/* Release and preview links */}
-          <motion.div
-            className="flex flex-col items-center gap-2 mt-2 text-xs text-[var(--color-text-muted)]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-          >
-            <a
-              href="/release-notes"
-              onClick={(event) => navigateLink(event, onShowReleaseNotes)}
-              className="hover:text-[var(--color-electric)] transition-colors underline"
-            >
-              {version
-                ? t("Release notes ({{version}})", { version })
-                : t("Release notes")}
-            </a>
-          </motion.div>
         </motion.div>
       </motion.div>
       {/* Loading indicator */}
@@ -313,99 +263,6 @@ export function SplashScreen({
         </motion.div>
       )}
 
-      {/* Standalone documentation links */}
-      <motion.div
-        className="absolute bottom-20 flex items-center gap-4 text-xs font-light tracking-wider text-[var(--color-text-muted)]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.1 }}
-      >
-        <a
-          href="/developer-guide"
-          onClick={(event) => navigateLink(event, onShowDeveloperGuide)}
-          className="hover:text-[var(--color-electric)] transition-colors underline"
-        >
-          {t("Keyboard developer guide")}
-        </a>
-      </motion.div>
-
-      {/* Tagline */}
-      <motion.div
-        className="absolute bottom-5 flex items-center gap-3 px-4 text-xs font-light tracking-wider text-[var(--color-text-muted)]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-      >
-        <EditorTooltip content="https://github.com/Frank-KW/velvet-mac-studio">
-          <a
-            href="https://github.com/Frank-KW/velvet-mac-studio"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t("Velvet Mac Studio on GitHub")}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full hover:opacity-80 transition-opacity"
-          >
-            <img
-              src={theme === "dark" ? githubMarkWhite : githubMarkBlack}
-              width={24}
-              height={24}
-              className="object-contain"
-              alt=""
-              aria-hidden="true"
-            />
-          </a>
-        </EditorTooltip>
-        <p>
-          {t("Unofficial fork of")}
-          <a
-            href="https://github.com/cormoran/dya-studio"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline mx-1"
-          >
-            DYA Studio
-          </a>
-          {t("by")}
-          <a
-            href="https://x.com/cormoran707"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline mx-1"
-          >
-            @cormoran707
-          </a>
-          <br />
-          {t("Special thanks to")}
-          <a
-            href="https://zmk.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline mx-1"
-          >
-            {t("ZMK community")}
-          </a>
-          .
-        </p>
-        <EditorTooltip content="https://x.com/cormoran707">
-          <a
-            href="https://x.com/cormoran707"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="@cormoran707 on X"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full hover:opacity-80 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-electric)]"
-          >
-            <img
-              src={maintainerAvatar}
-              width={24}
-              height={24}
-              className="rounded-full object-cover"
-              alt=""
-              aria-hidden="true"
-            />
-          </a>
-        </EditorTooltip>
-      </motion.div>
-
-      {/* Connection Notice Dialog */}
       <ConnectionNoticeDialog
         open={showNotice}
         method={pendingMethod}

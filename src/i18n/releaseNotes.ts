@@ -47,7 +47,7 @@ export interface ReleaseSummary {
 }
 
 /** GitHub repository the release notes link back to. */
-export const GITHUB_REPO_URL = "https://github.com/cormoran/dya-studio";
+export const GITHUB_REPO_URL = "https://github.com/Frank-KW/velvet-mac-studio";
 
 /** Normalize a change's optional `pr` field to a list of PR numbers. */
 export function prNumbers(change: LocalizedChange): number[] {
