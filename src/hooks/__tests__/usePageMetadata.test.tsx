@@ -48,7 +48,7 @@ test("updates existing metadata across public routes and languages without dupli
   ).toBe(`${SITE_URL}/developer-guide/modules/trackball`);
 
   rerender({ path: "/release-notes", language: "zh" });
-  expect(document.title).toBe("发行说明 | DYA Studio");
+  expect(document.title).toBe("发行说明 | Velvet Mac Studio");
   expect(
     document.querySelector<HTMLMetaElement>('meta[property="og:url"]')!.content,
   ).toBe(`${SITE_URL}/release-notes`);

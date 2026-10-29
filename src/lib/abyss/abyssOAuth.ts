@@ -22,7 +22,7 @@
  * Only the tab that *started* the login answers, and it proves that by matching
  * the OAuth `state` parameter against the one it generated. That matters: the
  * PKCE code verifier lives in the initiating tab's `sessionStorage`, so any
- * other open DYA Studio tab would fail the exchange. The acknowledgement is
+ * other open Velvet Mac Studio tab would fail the exchange. The acknowledgement is
  * also how the callback page tells which mode it is in — acknowledged means it
  * is a popup and should close, silence means it is a full-page redirect and
  * must exchange the code itself.

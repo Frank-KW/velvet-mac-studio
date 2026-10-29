@@ -26,12 +26,13 @@ export type ConnectFailReason =
   | "error";
 
 /**
- * Thin guarded wrapper around `gtag`. No-ops when GA isn't loaded (e.g. the
- * script is blocked, or `VITE_GOOGLE_ANALYTICS_ID` is unset in dev builds).
+ * Velvet Mac Studio sends no analytics. The Google Analytics script was removed
+ * from `index.html`, and this wrapper deliberately does nothing so that every
+ * `track*` call below stays inert.
  */
-function trackEvent(name: string, params?: Record<string, unknown>): void {
-  if (typeof window === "undefined" || !window.gtag) return;
-  window.gtag("event", name, params);
+function trackEvent(_name: string, _params?: Record<string, unknown>): void {
+  void _name;
+  void _params;
 }
 
 /** SPA page view, fired on tab navigation. */

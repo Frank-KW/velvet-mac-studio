@@ -625,7 +625,7 @@ export function useKeymapSharing(
             );
           await client.updateKeymap(pending.record.id, {
             data: pending.after as AbyssKeymapData,
-            message: "Saved from DYA Studio",
+            message: "Saved from Velvet Mac Studio",
           });
           valid();
           cache.current.records.delete(pending.record.id);
@@ -777,7 +777,7 @@ export function useKeymapSharing(
           name.trim(),
         ) as AbyssKeymapData,
         layout: loaded.state.detectedLayout as unknown as AbyssLayoutDefinition,
-        message: "Created from DYA Studio",
+        message: "Created from Velvet Mac Studio",
       };
       const written = resolved?.layout
         ? await client.createKeymap(resolved.layout.variation.id, input)

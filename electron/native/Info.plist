@@ -3,5 +3,5 @@
 <plist version="1.0"><dict>
 <key>CFBundleIdentifier</key><string>works.cormoran.dya-studio.ble-bridge</string>
 <key>CFBundleName</key><string>dya-ble-bridge</string>
-<key>NSBluetoothAlwaysUsageDescription</key><string>DYA Studio talks to your keyboard over Bluetooth.</string>
+<key>NSBluetoothAlwaysUsageDescription</key><string>Velvet Mac Studio talks to your keyboard over Bluetooth.</string>
 </dict></plist>

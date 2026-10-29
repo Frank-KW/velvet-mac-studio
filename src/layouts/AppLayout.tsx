@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { IconPlugConnectedX } from "@tabler/icons-react";
-import DyaLogo from "../assets/dya.svg?react";
+import VelvetLogo from "../assets/velvet.svg?react";
 import { ThemeSelect } from "../components/ThemeSelect";
 import { useLanguage } from "../hooks/useLanguage";
 import type { ConnectionMethod } from "../components/DeviceConnection";
@@ -48,13 +48,13 @@ export function AppLayout({
         )}
         {/* Logo & Brand */}
         <div className="app-header-brand flex items-center gap-4">
-          <DyaLogo className="w-8 h-8 [&_polygon]:fill-[var(--color-text)]" />
+          <VelvetLogo className="w-8 h-8 text-[var(--color-text)]" />
           <div className="hidden sm:flex items-center gap-2">
             <span className="text-lg font-light tracking-widest text-[var(--color-text)]">
-              DYA
+              VELVET
             </span>
             <span className="text-xs font-light tracking-wider text-[var(--color-text-muted)] uppercase pt-1">
-              Studio
+              Mac Studio
             </span>
           </div>
         </div>

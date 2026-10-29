@@ -368,7 +368,7 @@ class Keyboard {
       uiUrl: [],
     },
     {
-      // No dedicated DYA Studio UI: the firmware module ships its own external
+      // No dedicated Velvet Mac Studio UI: the firmware module ships its own external
       // web UI, so this advertises a uiUrl and shows up as an external-link
       // card on the Subsystems tab.
       index: this.SETTING_EXPOSE_SUBSYSTEM_INDEX,

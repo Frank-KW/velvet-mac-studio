@@ -1,25 +1,7 @@
-import {
-  IconBook,
-  IconBrandGithub,
-  IconExternalLink,
-  IconFile,
-  IconBrandX,
-  IconInfoCircle,
-  IconNews,
-  IconShoppingCart,
-} from "@tabler/icons-react";
+import { IconBook, IconExternalLink, IconNews } from "@tabler/icons-react";
 import type { MouseEvent } from "react";
 
-import DyaDashImg from "../assets/dya-dash/dya-dash.jpeg";
-import DyaDashImg2 from "../assets/dya-dash/dya-dash2.jpeg";
-import DyaDashImg3 from "../assets/dya-dash/dya-dash3.jpeg";
-import DyaDashImg4 from "../assets/dya-dash/dya-dash4.jpeg";
-
-const DyaDashImages = [DyaDashImg, DyaDashImg2, DyaDashImg3, DyaDashImg4];
-
-import DYA2Img from "../assets/dya2/dya2.jpeg";
 import { useLanguage } from "../hooks/useLanguage";
-import DYA2Img2 from "../assets/dya2/dya2-2.jpeg";
 import {
   CHANGE_CATEGORIES,
   getLatestRelease,
@@ -27,15 +9,6 @@ import {
   localizeChange,
   localizeText,
 } from "../i18n/releaseNotes";
-
-const Dya2Images = [DYA2Img, DYA2Img2];
-
-const xShareContents = {
-  title: encodeURIComponent("DYA Studio for DYA & ZMK Keyboards"),
-  link: encodeURIComponent("https://studio.dya.cormoran.works"),
-  tags: "dya_studio,dy_kbd",
-};
-const xShareUrl = `https://twitter.com/intent/tweet?text=${xShareContents.title}&url=${xShareContents.link}&hashtags=${xShareContents.tags}`;
 
 function navigateWithinApp(event: MouseEvent<HTMLAnchorElement>, path: string) {
   if (
@@ -65,80 +38,47 @@ export function HomePage() {
           <div className="flex items-center gap-3 flex-1">
             <div className="flex-1">
               <h1 className="text-xl font-medium text-[var(--color-text)] text-center tablet:text-left">
-                {t("Welcome to DYA Studio")}
+                {t("Welcome to Velvet Mac Studio")}
               </h1>
               <p className="page-header-description text-sm text-[var(--color-text-muted)] mt-1">
-                {language === "ja" ? (
-                  <>
-                    DYA Studio は{" "}
-                    <a
-                      href="https://x.com/cormoran707"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-                    >
-                      cormoran707
-                    </a>{" "}
-                    が設計した DYA キーボードシリーズ向けの、もう一つの{" "}
-                    <a
-                      href="https://zmk.studio/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-                    >
-                      ZMK Studio
-                    </a>{" "}
-                    です
-                  </>
-                ) : (
-                  <>
-                    DYA Studio is yet another{" "}
-                    <a
-                      href="https://zmk.studio/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-                    >
-                      ZMK Studio
-                    </a>{" "}
-                    for DYA keyboard series, designed by{" "}
-                    <a
-                      href="https://x.com/cormoran707"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-                    >
-                      cormoran707
-                    </a>
-                  </>
-                )}
+                An unofficial Mac app for editing ZMK keyboards such as the
+                Velvet46, also over the Bluetooth profile that is already
+                connected. A fork of{" "}
+                <a
+                  href="https://github.com/cormoran/dya-studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
+                >
+                  DYA Studio
+                </a>{" "}
+                by{" "}
+                <a
+                  href="https://x.com/cormoran707"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
+                >
+                  cormoran707
+                </a>
+                . Free software (AGPL-3.0),{" "}
+                <a
+                  href="https://github.com/Frank-KW/velvet-mac-studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
+                >
+                  source code
+                </a>
+                . Not affiliated with cormoran707 or ZMK.
               </p>
             </div>
           </div>
-          <div className="ml-auto">
-            <a
-              href={xShareUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-3 py-1 rounded bg-[var(--color-electric)] text-white hover:bg-[var(--color-neon)] transition-colors text-xs font-semibold"
-              aria-label={t("Share on X")}
-            >
-              {t("Share on X")} <IconBrandX size={16} className="ml-1" />
-            </a>
-          </div>
         </div>
-        <div className="mb-4 text-xs text-[var(--color-text-muted)] flex items-center gap-1">
-          <IconInfoCircle size={14} /> {t("DYA is pronounced dai-a.")}
-        </div>
-        <div className="mb-4 text-xs text-[var(--color-text-muted)] flex items-center gap-1">
-          <IconInfoCircle size={14} />{" "}
-          {t("cormoran is pronounced cormoran [kˈɔɚm(ə)rən].")}
-        </div>
-
         {/* Guide */}
         <div className="glass-card p-6 mb-6">
           <h2 className="text-sm font-medium text-[var(--color-text-secondary)] mb-4">
-            {t("Features - What you can do with DYA Studio")}
+            {t("Features - What you can do with Velvet Mac Studio")}
           </h2>
           <div className="text-sm text-[var(--color-text-muted)] space-y-4">
             <ul className="list-disc list-outside space-y-2 pl-5">
@@ -170,137 +110,6 @@ export function HomePage() {
           </div>
         </div>
 
-        {/* DYA Keyboards Section */}
-        <div className="glass-card p-6 mb-6">
-          <h2 className="text-sm font-medium text-[var(--color-text-secondary)] mb-4">
-            {t("DYA Keyboard series")}
-            <a
-              href="https://x.com/intent/tweet?hashtags=dya_kbd"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline text-xs text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-            >
-              #dya_kbd
-            </a>
-          </h2>
-          <div className="space-y-3">
-            {/* DYA Dash */}
-            <div className="flex items-center justify-between p-4 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] group flex-col sm:flex-row">
-              <div className="flex flex-col flex-1 w-full">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
-                  <div className="flex items-center gap-4">
-                    <p className="text-sm font-medium text-[var(--color-text-secondary)]">
-                      DYA Dash
-                    </p>
-                    <span className="text-xs text-[var(--color-text-muted)]">
-                      {t("40% Split keyboard for mobile use.")}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 sm:ml-auto">
-                    <a
-                      href="https://github.com/cormoran/dya-dash-keyboard"
-                      target="_blank"
-                      className="flex items-center gap-1 underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors"
-                    >
-                      <IconBrandGithub size={16} />
-                      {t("Design")}
-                    </a>
-                    <a
-                      href="https://cormoran707.booth.pm/items/6913095"
-                      target="_blank"
-                      className="flex items-center gap-1 underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors"
-                    >
-                      <IconShoppingCart size={16} />
-                      {t("Buy")}
-                    </a>
-                    <a
-                      href="https://cormoran.github.io/dya-dash-keyboard/"
-                      target="_blank"
-                      className="flex items-center gap-1 underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors"
-                    >
-                      <IconFile size={16} />
-                      {t("Docs")}
-                    </a>
-                  </div>
-                </div>
-                <div className="home-product-gallery mt-2 overflow-x-auto">
-                  <div className="flex gap-4">
-                    {DyaDashImages.map((src, index) => (
-                      <img
-                        key={index}
-                        src={src}
-                        width="256"
-                        alt="DYA Dash"
-                        className="max-w-full h-auto rounded flex-shrink-0"
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* DYA2 */}
-            <div className="flex items-center justify-between p-4 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] group flex-col sm:flex-row">
-              <div className="flex flex-col flex-1 w-full">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
-                  <div className="flex items-center gap-4">
-                    <p className="text-sm font-medium text-[var(--color-text-secondary)]">
-                      DYA2
-                    </p>
-                    <span className="text-xs text-[var(--color-text-muted)]">
-                      {t(
-                        "Next generation DYA keyboard, 60% split, standard row-staggered layout.",
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 sm:ml-auto">
-                    <a
-                      href="https://github.com/cormoran/dya2-keyboard"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors"
-                    >
-                      <IconBrandGithub size={16} />
-                      {t("Design")}
-                    </a>
-                    <a
-                      href="https://cormoran707.booth.pm/items/7627440"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors"
-                    >
-                      <IconShoppingCart size={16} />
-                      {t("Buy")}
-                    </a>
-                    <a
-                      href="https://cormoran.github.io/dya2-keyboard/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors"
-                    >
-                      <IconFile size={16} />
-                      {t("Docs")}
-                    </a>
-                  </div>
-                </div>
-                <div className="home-product-gallery mt-2 overflow-x-auto">
-                  <div className="flex gap-4">
-                    {Dya2Images.map((src, index) => (
-                      <img
-                        key={index}
-                        src={src}
-                        width="256"
-                        alt="DYA2"
-                        className="max-w-full h-auto rounded flex-shrink-0"
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Developer resources */}
         <div className="glass-card p-6 mb-6">
           <div className="flex items-start gap-3">
@@ -310,11 +119,11 @@ export function HomePage() {
             />
             <div>
               <h2 className="text-sm font-medium text-[var(--color-text-secondary)]">
-                {t("Bring your keyboard to DYA Studio")}
+                {t("Bring your keyboard to Velvet Mac Studio")}
               </h2>
               <p className="text-sm text-[var(--color-text-muted)] mt-2">
                 {t(
-                  "Learn how to make your ZMK keyboard work with DYA Studio, from standard keymap support to custom features.",
+                  "Learn how to make your ZMK keyboard work with Velvet Mac Studio, from standard keymap support to custom features.",
                 )}
               </p>
               <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4">
@@ -441,7 +250,7 @@ export function HomePage() {
           <div className="space-y-4">
             <div>
               <p className="font-medium text-[var(--color-text)] mb-1">
-                {t("Q: Can my keyboard support DYA Studio?")}
+                {t("Q: Can my keyboard support Velvet Mac Studio?")}
               </p>
               <div className="text-sm text-[var(--color-text-muted)]">
                 {t(
@@ -488,12 +297,12 @@ export function HomePage() {
             </div>
             <div>
               <p className="font-medium text-[var(--color-text)] mb-1">
-                {t("Q: Can I get source code of DYA Studio?")}
+                {t("Q: Can I get source code of Velvet Mac Studio?")}
               </p>
               <p className="text-sm text-[var(--color-text-muted)]">
                 {language === "ja" ? (
                   <>
-                    A: はい、DYA Studio
+                    A: はい、Velvet Mac Studio
                     はオープンソースになりました。ソースコードは{" "}
                     <a
                       href="https://github.com/cormoran/dya-studio"
@@ -516,8 +325,8 @@ export function HomePage() {
                   </>
                 ) : (
                   <>
-                    A: Yes, DYA Studio is now open source. You can find the
-                    source code on{" "}
+                    A: Yes, Velvet Mac Studio is now open source. You can find
+                    the source code on{" "}
                     <a
                       href="https://github.com/cormoran/dya-studio"
                       target="_blank"

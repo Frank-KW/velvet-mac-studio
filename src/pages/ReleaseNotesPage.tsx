@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { IconArrowLeft, IconSparkles, IconTag } from "@tabler/icons-react";
-import DyaLogo from "../assets/dya.svg?react";
+import VelvetLogo from "../assets/velvet.svg?react";
 import { useLanguage } from "../hooks/useLanguage";
 import { LanguageToggle } from "../components/LanguageToggle";
 import {
@@ -205,13 +205,13 @@ export function ReleaseNotesPage({ onBack }: { onBack: () => void }) {
       <header className="sticky top-0 z-10 border-b border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 flex-shrink-0">
-            <DyaLogo className="w-8 h-8 [&_polygon]:fill-[var(--color-text)]" />
+            <VelvetLogo className="w-8 h-8 text-[var(--color-text)]" />
             <div className="flex items-center gap-2">
               <span className="text-lg font-light tracking-widest text-[var(--color-text)]">
-                DYA
+                VELVET
               </span>
               <span className="text-xs font-light tracking-wider text-[var(--color-text-muted)] uppercase pt-1">
-                Studio
+                Mac Studio
               </span>
             </div>
           </div>
@@ -235,7 +235,7 @@ export function ReleaseNotesPage({ onBack }: { onBack: () => void }) {
             {t("Release Notes")}
           </h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">
-            {t("What's new in DYA Studio")}
+            {t("What's new in Velvet Mac Studio")}
           </p>
         </div>
 

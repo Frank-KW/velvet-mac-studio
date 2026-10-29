@@ -1,18 +1,7 @@
-import { defineConfig, loadEnv, type Plugin } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import tailwindcss from "@tailwindcss/vite";
-
-function htmlEnvVarReplacePlugin(env: Record<string, string>): Plugin {
-  return {
-    name: "html-transform",
-    transformIndexHtml: {
-      order: "pre",
-      handler: (html: string): string =>
-        html.replace(/%(.*?)%/g, (match, p1) => env[p1] ?? match),
-    },
-  };
-}
 
 /**
  * `@keyboard-hub/adapter-zmk` is built against its own copy of the ZMK Studio
@@ -44,10 +33,6 @@ export default defineConfig(({ mode }) => {
         },
       }),
       svgr(),
-      htmlEnvVarReplacePlugin({
-        VITE_GOOGLE_ANALYTICS_ID:
-          env.VITE_GOOGLE_ANALYTICS_ID || "G-32NGG9Y4BQ",
-      }),
     ],
   };
 });

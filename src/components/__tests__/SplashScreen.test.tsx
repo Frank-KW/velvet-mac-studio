@@ -80,7 +80,7 @@ test.each([
   (error) => {
     render(localizedSplash("ja", error));
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "別のタブの DYA Studio や他のアプリが使用している可能性があります",
+      "別のタブの Velvet Mac Studio や他のアプリが使用している可能性があります",
     );
     expect(screen.getByRole("alert")).toHaveTextContent(
       "閉じてからもう一度お試しください",
@@ -97,7 +97,7 @@ test.each([
 test("updates an existing error when the language changes", () => {
   const { rerender } = render(localizedSplash("en", serialError));
   expect(screen.getByRole("alert")).toHaveTextContent(
-    "Another DYA Studio tab or app may be using it",
+    "Another Velvet Mac Studio tab or app may be using it",
   );
   rerender(localizedSplash("ja", serialError));
   expect(screen.getByRole("alert")).toHaveTextContent(
@@ -120,7 +120,7 @@ test.each([
     render(localizedSplash("ja", error));
     expect(screen.getByRole("alert")).toHaveTextContent(expected);
     expect(screen.getByRole("alert")).not.toHaveTextContent(
-      "別のタブの DYA Studio",
+      "別のタブの Velvet Mac Studio",
     );
     expect(screen.getByText(error)).toBeInTheDocument();
   },

@@ -1,5 +1,5 @@
 /**
- * Tests for the bridge between DYA Studio's connection and the Abyss adapter.
+ * Tests for the bridge between Velvet Mac Studio's connection and the Abyss adapter.
  */
 import type { RpcConnection } from "@zmkfirmware/zmk-studio-ts-client";
 import { createAbyssZmkConnection } from "../zmkConnectionAdapter";

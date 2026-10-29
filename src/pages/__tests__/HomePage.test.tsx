@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { getLatestRelease } from "../../i18n/releaseNotes";
 import { HomePage } from "../HomePage";
 
@@ -7,25 +7,18 @@ describe("HomePage", () => {
     window.history.replaceState(null, "", "/");
   });
 
-  it("links DYA2 to its published design, store, and documentation", () => {
+  it("credits the original DYA Studio and links to this fork's source", () => {
     render(<HomePage />);
 
-    const dya2Heading = screen.getByText("DYA2");
-    const dya2Card = dya2Heading.closest(".group");
-    expect(dya2Card).not.toBeNull();
-
-    expect(
-      within(dya2Card!).getByRole("link", { name: "Design" }),
-    ).toHaveAttribute("href", "https://github.com/cormoran/dya2-keyboard");
-    expect(
-      within(dya2Card!).getByRole("link", { name: "Buy" }),
-    ).toHaveAttribute("href", "https://cormoran707.booth.pm/items/7627440");
-    expect(
-      within(dya2Card!).getByRole("link", { name: "Docs" }),
-    ).toHaveAttribute("href", "https://cormoran.github.io/dya2-keyboard/");
-    expect(
-      within(dya2Card!).queryByText("Coming Soon"),
-    ).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "DYA Studio" })).toHaveAttribute(
+      "href",
+      "https://github.com/cormoran/dya-studio",
+    );
+    expect(screen.getByRole("link", { name: "source code" })).toHaveAttribute(
+      "href",
+      "https://github.com/Frank-KW/velvet-mac-studio",
+    );
+    expect(screen.queryByRole("link", { name: "Buy" })).not.toBeInTheDocument();
   });
 
   it("links to both keyboard developer guides", () => {

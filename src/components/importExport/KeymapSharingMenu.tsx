@@ -172,7 +172,7 @@ export function KeymapSharingMenu({
                 </button>
                 <p className="mt-2 text-xs text-[var(--color-text-muted)]">
                   {t(
-                    "Keyboard Abyss is a keymap sharing service developed by @cormoran707, the developer of DYA Studio.",
+                    "Keyboard Abyss is a keymap sharing service developed by @cormoran707, the developer of Velvet Mac Studio.",
                   )}
                 </p>
                 {!auth.isConfigured && (

@@ -104,7 +104,7 @@ function sectionBody<T>(
 
 export function buildSupportReport(input: SupportReportInput): string {
   const lines: string[] = [
-    "# DYA Studio Support Report",
+    "# Velvet Mac Studio Support Report",
     `- Generated: ${input.generatedAt}`,
     `- Device: ${input.deviceName ?? "(not connected)"}`,
     `- App: ${input.appUrl}`,

@@ -66,7 +66,7 @@ describe("DeveloperGuidePage navigation", () => {
     expect(window.location.pathname).toBe("/developer-guide/modules/settings");
   });
 
-  it("offers theme switching and a link back to DYA Studio", () => {
+  it("offers theme switching and a link back to Velvet Mac Studio", () => {
     const setTheme = jest.fn();
 
     render(
@@ -82,7 +82,7 @@ describe("DeveloperGuidePage navigation", () => {
 
     expect(setTheme).toHaveBeenCalledWith("pop");
     expect(
-      screen.getByRole("link", { name: "Back to DYA Studio" }),
+      screen.getByRole("link", { name: "Back to Velvet Mac Studio" }),
     ).toHaveAttribute("href", "/");
   });
 });

@@ -173,10 +173,10 @@ export function SplashScreen({
           transition={{ duration: 1, delay: 0.5 }}
         >
           <h1 className="text-4xl font-light tracking-[0.3em] text-[var(--color-text)]">
-            DYA
+            VELVET
           </h1>
           <p className="text-sm font-light tracking-[0.2em] text-[var(--color-text-muted)] uppercase">
-            Studio
+            Mac Studio
           </p>
         </motion.div>
 
@@ -278,14 +278,6 @@ export function SplashScreen({
                 ? t("Release notes ({{version}})", { version })
                 : t("Release notes")}
             </a>
-            <a
-              href="https://dya-studio-dev.cormoran707.workers.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--color-electric)] transition-colors underline"
-            >
-              {t("Try the Beta version")}
-            </a>
           </motion.div>
         </motion.div>
       </motion.div>
@@ -344,12 +336,12 @@ export function SplashScreen({
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
       >
-        <EditorTooltip content="https://github.com/cormoran/dya-studio">
+        <EditorTooltip content="https://github.com/Frank-KW/velvet-mac-studio">
           <a
-            href="https://github.com/cormoran/dya-studio"
+            href="https://github.com/Frank-KW/velvet-mac-studio"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={t("DYA Studio on GitHub")}
+            aria-label={t("Velvet Mac Studio on GitHub")}
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full hover:opacity-80 transition-opacity"
           >
             <img
@@ -363,7 +355,16 @@ export function SplashScreen({
           </a>
         </EditorTooltip>
         <p>
-          {t("DYA Studio is maintained by")}
+          {t("Unofficial fork of")}
+          <a
+            href="https://github.com/cormoran/dya-studio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline mx-1"
+          >
+            DYA Studio
+          </a>
+          {t("by")}
           <a
             href="https://x.com/cormoran707"
             target="_blank"
