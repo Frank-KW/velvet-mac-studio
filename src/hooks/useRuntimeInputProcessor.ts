@@ -120,6 +120,21 @@ export interface UseRuntimeInputProcessorReturn {
   setXySwapEnabled: (id: number, enabled: boolean) => Promise<void>;
 }
 
+/**
+ * The ZMK Studio client rejects with plain strings ("No response",
+ * "Mismatch request IDs", "Failed to process the byte"), not Error objects, so
+ * `err.message` is empty. They all mean the reply stream is out of step with
+ * the requests (a lost or extra reply, or another app talking to the same
+ * keyboard), which only a fresh connection fixes.
+ */
+function errorText(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === "string" && err) {
+    return `${err}. The connection is out of sync. Disconnect, close other apps that use this keyboard, and connect again.`;
+  }
+  return "Unknown error";
+}
+
 export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
   const zmkApp = useContext(ZMKAppContext);
   const {
@@ -289,9 +304,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
       );
     } catch (err) {
       console.error("Failed to load processors:", err);
-      setError(
-        `Failed to load processors: ${err instanceof Error ? err.message : "Unknown error"}`,
-      );
+      setError(`Failed to load processors: ${errorText(err)}`);
     } finally {
       setIsLoading(false);
     }
@@ -342,9 +355,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set scaling:", err);
-        setError(
-          `Failed to set scaling: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set scaling: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -379,9 +390,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set rotation:", err);
-        setError(
-          `Failed to set rotation: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set rotation: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -416,9 +425,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set temp layer enabled:", err);
-        setError(
-          `Failed to set temp layer enabled: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set temp layer enabled: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -453,9 +460,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set temp layer:", err);
-        setError(
-          `Failed to set temp layer: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set temp layer: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -493,7 +498,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
       } catch (err) {
         console.error("Failed to set temp layer activation delay:", err);
         setError(
-          `Failed to set temp layer activation delay: ${err instanceof Error ? err.message : "Unknown error"}`,
+          `Failed to set temp layer activation delay: ${errorText(err)}`,
         );
       } finally {
         setIsLoading(false);
@@ -532,7 +537,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
       } catch (err) {
         console.error("Failed to set temp layer deactivation delay:", err);
         setError(
-          `Failed to set temp layer deactivation delay: ${err instanceof Error ? err.message : "Unknown error"}`,
+          `Failed to set temp layer deactivation delay: ${errorText(err)}`,
         );
       } finally {
         setIsLoading(false);
@@ -568,9 +573,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set active layers:", err);
-        setError(
-          `Failed to set active layers: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set active layers: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -605,9 +608,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set axis snap mode:", err);
-        setError(
-          `Failed to set axis snap mode: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set axis snap mode: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -642,9 +643,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set axis snap threshold:", err);
-        setError(
-          `Failed to set axis snap threshold: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set axis snap threshold: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -679,9 +678,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set axis snap timeout:", err);
-        setError(
-          `Failed to set axis snap timeout: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set axis snap timeout: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -716,9 +713,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set X invert:", err);
-        setError(
-          `Failed to set X invert: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set X invert: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -753,9 +748,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set Y invert:", err);
-        setError(
-          `Failed to set Y invert: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set Y invert: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -790,9 +783,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set XY to scroll enabled:", err);
-        setError(
-          `Failed to set XY to scroll enabled: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set XY to scroll enabled: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -827,9 +818,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
         }
       } catch (err) {
         console.error("Failed to set XY swap enabled:", err);
-        setError(
-          `Failed to set XY swap enabled: ${err instanceof Error ? err.message : "Unknown error"}`,
-        );
+        setError(`Failed to set XY swap enabled: ${errorText(err)}`);
       } finally {
         setIsLoading(false);
       }
@@ -938,9 +927,7 @@ export function useRuntimeInputProcessor(): UseRuntimeInputProcessorReturn {
       }
     } catch (err) {
       console.error("Failed to load layers:", err);
-      setError(
-        `Failed to load layers: ${err instanceof Error ? err.message : "Unknown error"}`,
-      );
+      setError(`Failed to load layers: ${errorText(err)}`);
     } finally {
       setIsLoading(false);
     }
