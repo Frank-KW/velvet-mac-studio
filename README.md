@@ -1,3 +1,13 @@
+> **Velvet Mac Studio** is an unofficial, AGPL-3.0 fork of [DYA Studio](https://github.com/cormoran/dya-studio) by cormoran. It adds a **Mac app that edits a ZMK keyboard over the Bluetooth profile that is already connected** (no USB cable, no re-pairing). See [NOTICE.md](NOTICE.md) for credits and what changed. Not affiliated with cormoran, the Velvet46 makers, or ZMK.
+>
+> **Build the Mac app (Apple Silicon, Xcode command line tools needed):**
+>
+> ```bash
+> npm ci && npm run build:app && npx electron-builder --mac --dir
+> ```
+>
+> The app appears in `release/mac-arm64/`. On first launch, allow Bluetooth when macOS asks. Unsigned builds need right-click → Open the first time.
+
 <p align="center">
   <img src="src/assets/dya.svg" alt="DYA Logo" width="96" height="96" />
 </p>

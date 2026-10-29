@@ -1,5 +1,5 @@
 {
-  "name": "dya-studio",
+  "name": "velvet-mac-studio",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,13 +16,14 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "build:electron": "tsc -p tsconfig.electron.json",
-    "build:app": "npm run generate && tsc -b && vite build && npm run build:electron",
+    "build:electron": "tsc -p tsconfig.electron.json && tsc -p tsconfig.preload.json && mv dist-electron/preload-cjs/preload.js dist-electron/preload.cjs && rmdir dist-electron/preload-cjs",
+    "build:app": "npm run generate && tsc -b && vite build && npm run build:electron && npm run build:native",
     "dist": "npm run build:app && electron-builder",
     "dist:mac": "npm run build:app && electron-builder --mac",
     "dist:win": "npm run build:app && electron-builder --win",
     "dist:linux": "npm run build:app && electron-builder --linux",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build:native": "mkdir -p build-native && swiftc -O electron/native/ble-bridge.swift -o build-native/dya-ble-bridge -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __info_plist -Xlinker electron/native/Info.plist"
   },
   "dependencies": {
     "@cormoran/zmk-studio-react-hook": "github:cormoran/react-zmk-studio",
@@ -94,8 +95,8 @@
     ]
   },
   "build": {
-    "appId": "works.cormoran.dya-studio",
-    "productName": "DYA Studio",
+    "appId": "io.github.frank-kw.velvet-mac-studio",
+    "productName": "Velvet Mac Studio",
     "directories": {
       "output": "release"
     },
@@ -123,6 +124,19 @@
         "deb"
       ],
       "category": "Development"
-    }
-  }
+    },
+    "extraResources": [
+      {
+        "from": "build-native/dya-ble-bridge",
+        "to": "dya-ble-bridge"
+      }
+    ]
+  },
+  "description": "Unofficial Mac app for editing ZMK keyboards (such as Velvet46) over USB or the already-connected Bluetooth profile. Fork of DYA Studio.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Frank-KW/velvet-mac-studio.git"
+  },
+  "homepage": "https://github.com/Frank-KW/velvet-mac-studio",
+  "license": "AGPL-3.0-only"
 }

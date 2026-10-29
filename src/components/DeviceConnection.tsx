@@ -10,6 +10,10 @@ import {
 import type { UseZMKAppOptions } from "@cormoran/zmk-studio-react-hook";
 import { connect as connectBLE } from "@zmkfirmware/zmk-studio-ts-client/transport/gatt";
 import { connect as connectUSB } from "../lib/transport/usb";
+import {
+  connect as connectNativeBLE,
+  isNativeBleAvailable,
+} from "../lib/transport/nativeBle";
 import { connect as connectDemo } from "../lib/transport/demo";
 import {
   resolveCustomSubsystemIdentifier,
@@ -213,7 +217,7 @@ export function DeviceConnectionProvider({
     async (method: ConnectionMethod) => {
       let connectFn: () => Promise<RpcTransport>;
       if (method === "ble") {
-        connectFn = connectBLE;
+        connectFn = isNativeBleAvailable() ? connectNativeBLE : connectBLE;
       } else if (method === "demo") {
         connectFn = connectDemo;
       } else {

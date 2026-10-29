@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleIdentifier</key><string>works.cormoran.dya-studio.ble-bridge</string>
+<key>CFBundleName</key><string>dya-ble-bridge</string>
+<key>NSBluetoothAlwaysUsageDescription</key><string>DYA Studio talks to your keyboard over Bluetooth.</string>
+</dict></plist>
