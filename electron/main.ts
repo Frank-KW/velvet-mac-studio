@@ -69,7 +69,7 @@ async function promptForSerialPort(
     title: "Select USB Serial Port",
     message: "Choose the keyboard serial port to connect.",
     detail:
-      "If multiple ports are listed, pick the one that belongs to your DYA keyboard.",
+      "If multiple ports are listed, pick the one that belongs to your keyboard.",
     buttons,
     cancelId: ports.length,
     defaultId: 0,
@@ -102,7 +102,7 @@ async function promptForBluetoothDevice(
     title: "Select Bluetooth Device",
     message: "Choose the keyboard Bluetooth device to connect.",
     detail:
-      "If multiple devices are listed, pick the one that belongs to your DYA keyboard.",
+      "If multiple devices are listed, pick the one that belongs to your keyboard.",
     buttons,
     cancelId: devices.length,
     defaultId: 0,
@@ -216,8 +216,8 @@ const bridgeWaiters = new Set<(event: BridgeEvent) => void>();
 
 function bridgePath() {
   return app.isPackaged
-    ? path.join(process.resourcesPath, "dya-ble-bridge")
-    : path.join(__dirname, "../build-native/dya-ble-bridge");
+    ? path.join(process.resourcesPath, "velvet-ble-bridge")
+    : path.join(__dirname, "../build-native/velvet-ble-bridge");
 }
 
 // The helper can outlive the window (quit, close); sending to a destroyed

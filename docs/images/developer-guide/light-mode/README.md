@@ -14,24 +14,6 @@ Capture every image in **light mode**, with the relevant screen and a realistic 
 | `settings.png`        | Sleep and physical layout settings              |
 | `troubleshooting.png` | Device information and diagnostics              |
 
-## Generate the assets
+## Regenerating the assets
 
-The repeatable capture job uses DYA Studio's built-in Demo keyboard. It needs no
-physical keyboard or Renode firmware, while still displaying the Custom Studio
-RPC feature states the guide describes.
-
-```bash
-cd e2e/renode
-npm install
-npx playwright install chromium
-npm run screenshots:developer-guide
-```
-
-The job builds the app, opens each tab at a 1440 × 1200 viewport, fixes the UI
-to English and light mode, and writes the seven PNGs in this directory. It
-refuses to overwrite an existing asset. To deliberately recapture an approved
-image, move it elsewhere first, run the job, review the new PNG, then replace
-the approved file in a separate intentional change.
-
-Avoid highlighting development-only controls unless the corresponding guide
-section is specifically about diagnostics.
+The upstream capture job (Playwright + Renode) was removed from this fork. Take new screenshots by hand from the built-in Demo keyboard at a 1440 × 1200 viewport, English, light mode.

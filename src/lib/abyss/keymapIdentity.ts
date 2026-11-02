@@ -22,7 +22,7 @@ export async function keymapIdentifier(id: string): Promise<string> {
 }
 
 const storageKey = () =>
-  `dya-studio:abyss-identities:${new URL(abyssBaseUrl()).origin}`;
+  `velvet-mac-studio:abyss-identities:${new URL(abyssBaseUrl()).origin}`;
 
 export function rememberKeymap(identifier: string, id: string): void {
   try {

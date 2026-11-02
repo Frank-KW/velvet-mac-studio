@@ -8,7 +8,7 @@
  */
 import type { NewSnapshot, StoredSnapshot, VersionStoreBackend } from "./types";
 
-export const DB_NAME = "dya-studio-version-history";
+export const DB_NAME = "velvet-mac-studio-version-history";
 export const DB_VERSION = 1;
 export const SNAPSHOT_STORE = "snapshots";
 /** Index over `[deviceKey, tabId]`, the only query the store needs. */

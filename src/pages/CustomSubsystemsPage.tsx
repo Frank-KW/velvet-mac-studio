@@ -69,8 +69,9 @@ type Subsystem = ListCustomSubsystemResponse["subsystems"][number];
 // Store an irreversible URL digest rather than a firmware-provided external
 // URL. The digest still lets us match the exact URL the user approved without
 // leaving their approval history as clear text in browser storage.
-const APPROVED_URL_DIGESTS_KEY = "dya-studio-approved-subsystem-url-digests";
-const LEGACY_TRUSTED_URLS_KEY = "dya-studio-trusted-subsystem-urls";
+const APPROVED_URL_DIGESTS_KEY =
+  "velvet-mac-studio-approved-subsystem-url-digests";
+const LEGACY_TRUSTED_URLS_KEY = "velvet-mac-studio-trusted-subsystem-urls";
 const SHA_256_HEX = /^[a-f0-9]{64}$/;
 
 function isValidUrl(value: string): boolean {

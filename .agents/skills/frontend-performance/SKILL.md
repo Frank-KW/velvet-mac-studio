@@ -1,6 +1,6 @@
 ---
 name: frontend-performance
-description: Measure and improve DYA Studio frontend responsiveness, loading cost, and resource use. Use for performance audits or optimizations, not ordinary UI regression or backend tuning.
+description: Measure and improve Velvet Mac Studio frontend responsiveness, loading cost, and resource use. Use for performance audits or optimizations, not ordinary UI regression or backend tuning.
 ---
 
 # Frontend performance

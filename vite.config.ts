@@ -8,8 +8,8 @@ import tailwindcss from "@tailwindcss/vite";
  * client, but `call_rpc` serializes through a module-level mutex. Two copies
  * means one `RpcConnection` guarded by two independent mutexes, and concurrent
  * calls corrupt the shared request/response streams. The two clients are the
- * same upstream with identical wire types, so collapse them onto the fork DYA
- * Studio already uses.
+ * same upstream with identical wire types, so collapse them onto the fork this app
+ * already uses.
  *
  * Mirrored in `tsconfig.app.json` (`paths`) and `jest.config.ts`
  * (`moduleNameMapper`) — all three must agree.

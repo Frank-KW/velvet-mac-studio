@@ -12,7 +12,7 @@ import { KscanDriverType } from "../../proto/cormoran/kscan_diagnostics/kscan_di
 function baseInput(): SupportReportInput {
   return {
     generatedAt: "2026-07-06T00:00:00.000Z",
-    deviceName: "dya-dash",
+    deviceName: "demo-board",
     userAgent: "test-agent/1.0",
     appUrl: "https://example.com/app",
     deviceInfo: { available: false, data: null },
@@ -28,7 +28,7 @@ describe("buildSupportReport", () => {
 
     expect(report).toContain("# Velvet Mac Studio Support Report");
     expect(report).toContain("Generated: 2026-07-06T00:00:00.000Z");
-    expect(report).toContain("Device: dya-dash");
+    expect(report).toContain("Device: demo-board");
     expect(report).toContain("Browser: test-agent/1.0");
   });
 
@@ -56,7 +56,7 @@ describe("buildSupportReport", () => {
             moduleDirty: false,
             zephyrVersion: "3.7",
             buildTimestamp: "2026-01-01",
-            board: "dya_dash",
+            board: "demo_board",
           },
           hardware: {
             deviceId: "ABC123",
@@ -197,7 +197,7 @@ describe("buildSupportReport", () => {
     const report = buildSupportReport(input);
 
     expect(report).toContain("## Device Info (zmk__device_info)");
-    expect(report).toContain('"board": "dya_dash"');
+    expect(report).toContain('"board": "demo_board"');
     expect(report).toContain("## Stability / Watchdog (cormoran__watchdog)");
     expect(report).toContain(
       "Status: capacity 16, stored 2, dropped 0, recording active",

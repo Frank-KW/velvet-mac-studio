@@ -75,12 +75,6 @@ Coverage includes application code and excludes generated protobuf codecs,
 mock modules, setup, and test helpers. A coverage percentage is not evidence of
 assertion quality or browser/firmware behavior.
 
-Renode product tests use `e2e/renode/playwright.config.ts`. Developer-guide image
-generation is excluded from that suite and has a separate configuration. Run it
-only with `npm run screenshots:developer-guide` in `e2e/renode`; existing assets
-must be deliberately moved before recapturing. `playwright test --list` checks
-discovery only and does not verify a firmware-backed flow.
-
 ## Patterns
 
 **Context:**

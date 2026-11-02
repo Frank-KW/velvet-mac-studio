@@ -6,7 +6,7 @@
  * (proto/cormoran/kscan_diagnostics/kscan_diagnostics.proto).
  *
  * The single MATRIX device models a 5x12 matrix (60 cells) covering the
- * demo keyboard's DYA_DASH physical layout (59 keys, src/lib/layouts.ts) —
+ * demo keyboard's DEMO_SPLIT physical layout (59 keys, src/lib/layouts.ts) —
  * the last cell is intentionally left unmapped (0 in the position map) so
  * the interactive keyboard preview also exercises the "no wiring info"
  * path. Row lines live on "gpio0" pins 4..8, column lines on "gpio1" pins
@@ -335,7 +335,7 @@ export class KscanDiagnosticsHandler {
       return {
         layout: {
           layoutIndex: 0,
-          displayName: "DYA Dash",
+          displayName: "Demo Split",
           rows: ROWS,
           columns: COLUMNS,
           keyCount: POSITION_COUNT,

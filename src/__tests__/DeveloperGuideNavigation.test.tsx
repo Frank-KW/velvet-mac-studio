@@ -17,8 +17,8 @@ function expectPage(pathname: string, title: string) {
 
 describe("Developer Guide input through the App router", () => {
   beforeEach(() => {
-    localStorage.setItem("dya-studio-language", "ja");
-    localStorage.setItem("dya-studio-theme", "light");
+    localStorage.setItem("velvet-mac-studio-language", "ja");
+    localStorage.setItem("velvet-mac-studio-theme", "light");
     window.history.replaceState(null, "", "/developer-guide/modules/keymap");
     jest.spyOn(window, "scrollTo").mockImplementation(() => {});
   });
@@ -67,7 +67,7 @@ describe("Developer Guide input through the App router", () => {
     );
     expectPage("/developer-guide/modules/keymap", "Keymap, Macro, and Combo");
     expect(document.documentElement).toHaveAttribute("lang", "en");
-    expect(localStorage.getItem("dya-studio-language")).toBe("en");
+    expect(localStorage.getItem("velvet-mac-studio-language")).toBe("en");
 
     const japanese = screen.getByRole("button", {
       name: "日本語",
@@ -77,7 +77,7 @@ describe("Developer Guide input through the App router", () => {
     await user.keyboard("{Enter}");
     expectPage("/developer-guide/modules/keymap", "キーマップ、Macro、Combo");
     expect(document.documentElement).toHaveAttribute("lang", "ja");
-    expect(localStorage.getItem("dya-studio-language")).toBe("ja");
+    expect(localStorage.getItem("velvet-mac-studio-language")).toBe("ja");
   });
 
   it("closes an open mobile menu and renders the chosen page", async () => {

@@ -28,7 +28,7 @@ describe("loadPhysicalLayoutGeometry cache", () => {
     const storage = memoryStorage();
     storage.setItem(
       FastKeymapCacheKeys.layoutGeometry(DEVICE, 8194),
-      JSON.stringify({ name: "DYA2", fp: 8194, keys: KEYS }),
+      JSON.stringify({ name: "Demo ANSI", fp: 8194, keys: KEYS }),
     );
     const call = jest.fn<Promise<Response | null>, [Request]>();
 
@@ -49,7 +49,7 @@ describe("loadPhysicalLayoutGeometry cache", () => {
         ({
           getPhysicalLayout: {
             index: 2,
-            layout: { name: "DYA2", fp: 8194, keys: KEYS },
+            layout: { name: "Demo ANSI", fp: 8194, keys: KEYS },
           },
         }) as Response,
     );

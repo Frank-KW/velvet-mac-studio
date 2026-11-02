@@ -16,8 +16,8 @@ function attr(partialAttr: Partial<KeyPhysicalAttrs>): KeyPhysicalAttrs {
   };
 }
 
-export const DYA_DASH_ARROW: PhysicalLayout = {
-  name: "DYA Dash Arrow",
+export const DEMO_SPLIT_ARROW: PhysicalLayout = {
+  name: "Demo Split Arrow",
   keys: [
     { width: 100, height: 100, x: 0, y: 50 },
     { width: 100, height: 100, x: 100, y: 50 },
@@ -92,8 +92,8 @@ export const DYA_DASH_ARROW: PhysicalLayout = {
   ].map((v) => attr(v)),
 };
 
-export const DYA_DASH: PhysicalLayout = {
-  name: "DYA Dash",
+export const DEMO_SPLIT: PhysicalLayout = {
+  name: "Demo Split",
   keys: [
     { width: 100, height: 100, x: 0, y: 50 },
     { width: 100, height: 100, x: 100, y: 50 },
@@ -168,8 +168,8 @@ export const DYA_DASH: PhysicalLayout = {
   ].map((v) => attr(v)),
 };
 
-export const DYA2_ANSI: PhysicalLayout = {
-  name: "DYA2",
+export const DEMO_ANSI: PhysicalLayout = {
+  name: "Demo ANSI",
   keys: [
     { width: 100, height: 100, x: 0, y: 0 },
     { width: 100, height: 100, x: 100, y: 0 },
@@ -270,8 +270,8 @@ export const DYA2_ANSI: PhysicalLayout = {
   ].map((v) => attr(v)),
 };
 
-export const DYA2_JIS: PhysicalLayout = {
-  name: "DYA2 JIS",
+export const DEMO_JIS: PhysicalLayout = {
+  name: "Demo JIS",
   keys: [
     { width: 100, height: 100, x: 0, y: 0 },
     { width: 100, height: 100, x: 100, y: 0 },

@@ -7,7 +7,7 @@ package cormoran.fast_keymap;
 // metadata is writable (PR #5). See DESIGN.md for the full rationale.
 //
 // Vendored from cormoran/zmk-feature-fast-keymap
-// (proto/cormoran/fast-keymap/fast_keymap.proto) so dya-studio can talk to the
+// (proto/cormoran/fast-keymap/fast_keymap.proto) so this app can talk to the
 // `cormoran__fast_keymap` custom Studio RPC subsystem when a keyboard exposes
 // it, falling back to the official protocol otherwise. Kept in sync with
 // upstream (currently reflects PR #2: 16-bit / adaptive-width fingerprints,

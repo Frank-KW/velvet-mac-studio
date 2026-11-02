@@ -386,8 +386,6 @@ const ja: Record<string, string> = {
   "Previous key": "前のキー",
   "Next key": "次のキー",
   "Key {{position}} / {{count}}": "キー {{position}} / {{count}}",
-  "Velvet Mac Studio for DYA & ZMK Keyboards":
-    "DYA & ZMK キーボードのための Velvet Mac Studio",
   "The operation failed because the device is locked in ZMK Studio. Unlock the keyboard and try again.":
     "デバイスが ZMK Studio ロック状態のため操作に失敗しました。キーボードのロックを解除してから再度お試しください。",
   Home: "ホーム",
@@ -432,10 +430,7 @@ const ja: Record<string, string> = {
   Loading: "読み込み中",
   "Never show again": "今後表示しない",
   "Welcome to Velvet Mac Studio": "Velvet Mac Studio へようこそ",
-  "Velvet Mac Studio is yet another ZMK Studio for DYA keyboard series, designed by cormoran707":
-    "Velvet Mac Studio は cormoran707 が設計した DYA キーボードシリーズ向けのもう一つの ZMK Studio です",
   "Share on X": "X で共有",
-  "DYA is pronounced dai-a.": "DYA の読み方はダイアです",
   "cormoran is pronounced cormoran [kˈɔɚm(ə)rən].":
     "cormoran の読み方はコーモラン [kˈɔɚm(ə)rən] です",
   "Features - What you can do with Velvet Mac Studio":
@@ -452,14 +447,9 @@ const ja: Record<string, string> = {
     "スリープに入る時間など、各種設定を変更できます。",
   "See also below Q&A section for more details.":
     "詳細は下の Q&A セクションも参照してください。",
-  "DYA Keyboard series": "DYA キーボードシリーズ",
-  "40% Split keyboard for mobile use.":
-    "モバイル用途向けの 40% 分割キーボード。",
   Design: "設計",
   Buy: "購入",
   Docs: "ドキュメント",
-  "Next generation DYA keyboard, 60% split, standard row-staggered layout.":
-    "次世代 DYA キーボード。60% 分割、標準的なロウスタッガード配列。",
   "Coming Soon": "近日公開",
   "Watch Booth": "Booth を見る",
   "Bring your keyboard to Velvet Mac Studio":
@@ -476,10 +466,8 @@ const ja: Record<string, string> = {
     "A: はい。ZMK キーボードであれば、変更なしでキーマップ機能を使えます。",
   "You can also support other features by using cormoran's ZMK fork and cormoran's ZMK modules, although it's not suggested considering compatibility and maintainability.":
     "cormoran の ZMK fork と ZMK モジュールを使うことで他の機能にも対応できますが、互換性と保守性を考えると推奨しません。",
-  "Please refer to the experimental zmk-config for DYA Dash keyboard.":
-    "DYA Dash キーボード向けの experimental zmk-config を参照してください。",
-  "Warning: cormoran's ZMK fork is very experimental, optimized for DYA keyboards and may contain unstable or breaking changes. Use at your own risk. In rare cases, it may cause malfunction or damage to your keyboard hardware.":
-    "警告: cormoran の ZMK fork は非常に実験的で、DYA キーボード向けに最適化されています。不安定な変更や破壊的変更を含む可能性があります。自己責任で使用してください。まれにキーボードハードウェアの誤動作や損傷につながる場合があります。",
+  "Warning: cormoran's ZMK fork is very experimental and may contain unstable or breaking changes. Use at your own risk. In rare cases, it may cause malfunction or damage to your keyboard hardware.":
+    "警告: cormoran の ZMK fork は非常に実験的です。不安定な変更や破壊的変更を含む可能性があります。自己責任で使用してください。まれにキーボードハードウェアの誤動作や損傷につながる場合があります。",
   "Q: Can I get source code of Velvet Mac Studio?":
     "Q: Velvet Mac Studio のソースコードを入手できますか？",
   "Q: Are there plan to migrate the ZMK fork to ZMK v0.4.0?":
@@ -2123,8 +2111,6 @@ const zh: Record<string, string> = {
   "Move up": "上移",
   "Move down": "下移",
   "No behaviors found": "未找到行为",
-  "Velvet Mac Studio for DYA & ZMK Keyboards":
-    "面向 DYA 和 ZMK 键盘的 Velvet Mac Studio",
   "The operation failed because the device is locked in ZMK Studio. Unlock the keyboard and try again.":
     "操作失败，因为设备在 ZMK Studio 中处于锁定状态。请解锁键盘后重试。",
   Home: "首页",
@@ -2169,10 +2155,7 @@ const zh: Record<string, string> = {
   Loading: "加载中",
   "Never show again": "不再显示",
   "Welcome to Velvet Mac Studio": "欢迎使用 Velvet Mac Studio",
-  "Velvet Mac Studio is yet another ZMK Studio for DYA keyboard series, designed by cormoran707":
-    "Velvet Mac Studio 是由 cormoran707 设计的、面向 DYA 键盘系列的另一款 ZMK Studio",
   "Share on X": "分享到 X",
-  "DYA is pronounced dai-a.": "DYA 的发音是 dai-a（读作“迪亚”）。",
   "cormoran is pronounced cormoran [kˈɔɚm(ə)rən].":
     "cormoran 的发音是 cormoran [kˈɔɚm(ə)rən]（读作“科莫兰”）。",
   "Features - What you can do with Velvet Mac Studio":
@@ -2189,13 +2172,9 @@ const zh: Record<string, string> = {
     "可以修改进入睡眠模式的时间等各种设置。",
   "See also below Q&A section for more details.":
     "更多详情请参阅下方的 Q&A 部分。",
-  "DYA Keyboard series": "DYA 键盘系列",
-  "40% Split keyboard for mobile use.": "面向移动场景的 40% 分体式键盘。",
   Design: "设计",
   Buy: "购买",
   Docs: "文档",
-  "Next generation DYA keyboard, 60% split, standard row-staggered layout.":
-    "下一代 DYA 键盘，60% 分体式，标准行错位布局。",
   "Coming Soon": "即将推出",
   "Watch Booth": "查看 Booth",
   "Bring your keyboard to Velvet Mac Studio":
@@ -2212,10 +2191,8 @@ const zh: Record<string, string> = {
     "A: 可以。任何 ZMK 键盘无需修改即可使用键位功能。",
   "You can also support other features by using cormoran's ZMK fork and cormoran's ZMK modules, although it's not suggested considering compatibility and maintainability.":
     "也可以通过使用 cormoran 的 ZMK 分支及其 ZMK 模块来支持其他功能，但考虑到兼容性和可维护性，不建议这样做。",
-  "Please refer to the experimental zmk-config for DYA Dash keyboard.":
-    "请参考面向 DYA Dash 键盘的实验性 zmk-config。",
-  "Warning: cormoran's ZMK fork is very experimental, optimized for DYA keyboards and may contain unstable or breaking changes. Use at your own risk. In rare cases, it may cause malfunction or damage to your keyboard hardware.":
-    "警告：cormoran 的 ZMK 分支非常实验性，针对 DYA 键盘进行了优化，可能包含不稳定或破坏性更改。使用风险自负。在极少数情况下，可能导致键盘硬件故障或损坏。",
+  "Warning: cormoran's ZMK fork is very experimental and may contain unstable or breaking changes. Use at your own risk. In rare cases, it may cause malfunction or damage to your keyboard hardware.":
+    "警告：cormoran 的 ZMK 分支非常实验性，可能包含不稳定或破坏性更改。使用风险自负。在极少数情况下，可能导致键盘硬件故障或损坏。",
   "Q: Can I get source code of Velvet Mac Studio?":
     "Q: 我可以获取 Velvet Mac Studio 的源代码吗？",
   "Q: Are there plan to migrate the ZMK fork to ZMK v0.4.0?":

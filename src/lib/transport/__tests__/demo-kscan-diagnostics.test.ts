@@ -50,7 +50,7 @@ describe("KscanDiagnosticsHandler", () => {
   });
 
   describe("getLayout", () => {
-    it("returns the DYA Dash layout matching the demo keymap's key count", () => {
+    it("returns the Demo Split layout matching the demo keymap's key count", () => {
       const response = handler.process(
         Request.create({ getLayout: { layoutIndex: 0 } }),
       );

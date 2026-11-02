@@ -21,7 +21,7 @@ const show = (value: KeymapApplyResult) =>
   );
 beforeEach(() => {
   jest.clearAllMocks();
-  localStorage.setItem("dya-studio-language", "en");
+  localStorage.setItem("velvet-mac-studio-language", "en");
 });
 it("reports successful readback and closes independently of the preview", () => {
   show(result);

@@ -14,8 +14,9 @@ jest.mock("../../lib/navigate");
 import { navigateTo } from "../../lib/navigate";
 const mockNavigateTo = navigateTo as jest.MockedFunction<typeof navigateTo>;
 
-const APPROVED_URL_DIGESTS_KEY = "dya-studio-approved-subsystem-url-digests";
-const LEGACY_TRUSTED_URLS_KEY = "dya-studio-trusted-subsystem-urls";
+const APPROVED_URL_DIGESTS_KEY =
+  "velvet-mac-studio-approved-subsystem-url-digests";
+const LEGACY_TRUSTED_URLS_KEY = "velvet-mac-studio-trusted-subsystem-urls";
 
 describe("CustomSubsystemsPage", () => {
   beforeEach(() => {

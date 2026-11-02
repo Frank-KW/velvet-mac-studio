@@ -41,7 +41,7 @@ export const SETTING_EXPOSE_UI_URL =
   "https://cormoran.github.io/zmk-feature-zephyr-setting-expose/";
 
 /** localStorage key holding `{ [identifier]: boolean }` overrides. */
-const OVERRIDES_KEY = "dya-studio-demo-subsystem-overrides";
+const OVERRIDES_KEY = "velvet-mac-studio-demo-subsystem-overrides";
 
 export interface DemoSubsystemInfo {
   index: number;

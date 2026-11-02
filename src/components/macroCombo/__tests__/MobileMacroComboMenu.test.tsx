@@ -5,7 +5,7 @@ import { MobileMacroComboMenu } from "../MobileMacroComboMenu";
 
 describe("MobileMacroComboMenu", () => {
   beforeEach(() => {
-    localStorage.setItem("dya-studio-language", "en");
+    localStorage.setItem("velvet-mac-studio-language", "en");
   });
 
   it("groups selectable items and create actions while preserving status dots", async () => {

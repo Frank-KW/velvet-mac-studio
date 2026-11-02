@@ -4,7 +4,7 @@ import {
 } from "../content/developerGuide";
 import type { Language } from "../i18n/translations";
 
-export const SITE_URL = "https://studio.dya.cormoran.works";
+export const SITE_URL = "https://velvet-mac-studio.invalid";
 export const PUBLIC_PAGE_PATHS: readonly string[] = [
   "/",
   ...developerGuideRoutes,

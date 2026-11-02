@@ -23,7 +23,7 @@
     "dist:win": "npm run build:app && electron-builder --win",
     "dist:linux": "npm run build:app && electron-builder --linux",
     "prepare": "husky",
-    "build:native": "mkdir -p build-native && swiftc -O electron/native/ble-bridge.swift -o build-native/dya-ble-bridge -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __info_plist -Xlinker electron/native/Info.plist"
+    "build:native": "mkdir -p build-native && swiftc -O electron/native/ble-bridge.swift -o build-native/velvet-ble-bridge -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __info_plist -Xlinker electron/native/Info.plist"
   },
   "dependencies": {
     "@cormoran/zmk-studio-react-hook": "github:cormoran/react-zmk-studio",
@@ -127,12 +127,12 @@
     },
     "extraResources": [
       {
-        "from": "build-native/dya-ble-bridge",
-        "to": "dya-ble-bridge"
+        "from": "build-native/velvet-ble-bridge",
+        "to": "velvet-ble-bridge"
       }
     ]
   },
-  "description": "Unofficial Mac app for editing ZMK keyboards (such as Velvet46) over USB or the already-connected Bluetooth profile. Fork of DYA Studio.",
+  "description": "Unofficial Mac app for editing ZMK keyboards (such as Velvet46) over USB or the already-connected Bluetooth profile. Fork of DYA Studio by cormoran.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Frank-KW/velvet-mac-studio.git"

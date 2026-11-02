@@ -18,18 +18,18 @@
 | --------- | ------------------------------------------------------------------------------------------------- | -------------- |
 | OAUTH-R01 | popup と full-page redirect で single-use authorization code を一度だけ正しい document が交換する | S2/S3 から推定 |
 | OAUTH-R02 | state 不一致の別 tab が callback を横取りせず、callback query を route 正規化で失わない           | S1/S3 から推定 |
-| OAUTH-R03 | provider/config/exchange failure を成功画面にせず、DYA Studio へ戻れる                            | S2/S4 から推定 |
+| OAUTH-R03 | provider/config/exchange failure を成功画面にせず、Velvet Mac Studio へ戻れる                     | S2/S4 から推定 |
 
 ## 前提・状態
 
 この route は `DeviceConnectionProvider` 等を mount した後に、接続 UI gate より前で render される（guide と違い provider 自体の外ではない）。正常 popup は initiating tab が sessionStorage 内 PKCE transaction を使い code を交換する。callback window は BroadcastChannel を主、同 origin `window.opener.postMessage` を補助に relay し、ack を 1.5 秒待つ。full-page fallback は callback document 自身が exchange し、return path（なければ `/keymap`）を sessionStorage から consume して history replace で戻る。
 
-| 状態              | 表示                                                    | 副作用 / 終了                                              |
-| ----------------- | ------------------------------------------------------- | ---------------------------------------------------------- |
-| working           | `Completing Abyss sign-in...`                           | relay または client exchange 中                            |
-| relayed popup     | `Signed in to Abyss` / `You can close this window.`     | callback は exchange せず close を試行                     |
-| full-page success | callback UI を残さず onDone                             | token exchange 後、spent code の URL を replace            |
-| error             | `Abyss sign-in failed` と message、`Back to DYA Studio` | code は再利用せず、button で `/keymap` への replace を要求 |
+| 状態              | 表示                                                           | 副作用 / 終了                                              |
+| ----------------- | -------------------------------------------------------------- | ---------------------------------------------------------- |
+| working           | `Completing Abyss sign-in...`                                  | relay または client exchange 中                            |
+| relayed popup     | `Signed in to Abyss` / `You can close this window.`            | callback は exchange せず close を試行                     |
+| full-page success | callback UI を残さず onDone                                    | token exchange 後、spent code の URL を replace            |
+| error             | `Abyss sign-in failed` と message、`Back to Velvet Mac Studio` | code は再利用せず、button で `/keymap` への replace を要求 |
 
 ## 現行の機能仕様
 
@@ -39,13 +39,13 @@
 | OAUTH-002 | originating popup login の callback → state が一致する ack | callback は relay 済み表示、`window.close()` を試行する                                                  | code exchange は opener だけ。PKCE verifier は opener tab の sessionStorage                                                            | S2/S3/S4    |
 | OAUTH-003 | popup が block され full-page redirect                     | callback は 1.5 秒後に自身で `handleRedirectCallback` し、stashed return path を一回 remove して replace | token は localStorage、PKCE transaction は tab-scoped sessionStorage、history に spent code を残さない                                 | S1/S2/S3/S5 |
 | OAUTH-004 | callback component が StrictMode で effect 再実行          | `startedRef` により一つの relay/exchange だけを開始                                                      | second single-use-code exchange を防ぐ                                                                                                 | S2/S4       |
-| OAUTH-005 | client 未設定または exchange reject                        | error title/message と `Back to DYA Studio`                                                              | 自動 retry/rollback はしない。戻る操作は `IMPORT_EXPORT_PATH`（`/keymap`）を history replace。接続 gate・tab 可用性は app-shell に従う | S2/S4       |
+| OAUTH-005 | client 未設定または exchange reject                        | error title/message と `Back to Velvet Mac Studio`                                                       | 自動 retry/rollback はしない。戻る操作は `IMPORT_EXPORT_PATH`（`/keymap`）を history replace。接続 gate・tab 可用性は app-shell に従う | S2/S4       |
 
 ## 代表ユーザーフロー
 
 1. initiating tab の Keymap の共有メニュー から login を始める。popup callback は relay 後に close message となり、callback 自身が exchange しないことを test または network log で確認する（OAUTH-002）。
 2. popup blocker で full-page redirect にし、callback の success が `/keymap`（保存失敗時は既定 path）に replace することを確認する（OAUTH-003）。
-3. provider error/state 欠落/client 未設定で error を確認し、`Back to DYA Studio` で Keymap の共有メニュー への遷移を要求し、未接続なら接続 gate を表示する（OAUTH-005）。callback の code URL が履歴に残らないことは別に確認する。
+3. provider error/state 欠落/client 未設定で error を確認し、`Back to Velvet Mac Studio` で Keymap の共有メニュー への遷移を要求し、未接続なら接続 gate を表示する（OAUTH-005）。callback の code URL が履歴に残らないことは別に確認する。
 
 ## 不変条件
 
@@ -71,4 +71,4 @@ relay failure は 1.5 秒後 full-page mode と区別できないため callback
 
 provider 実環境での relay、COOP/third-party storage 制約、popup blocker の実 browser 挙動は未検証。ack timeout 後に遅延した opener が code を交換する race の望ましい扱いはコードからは保証できない。
 
-- 2026-10-15、`4545a15` の local DEV / Orca 組込みブラウザでは client 未設定 error の戻る操作後も callback route が残った。追加確認では `b3f0ea5` の Chrome で同じ query なし route → error → `Back to DYA Studio` を実行し、`/import-export` の接続画面への遷移と、その後の Demo 接続を実測した（OAUTH-005）。Orca の先行観測をアプリ共通の戻る不具合と断定しない。実認証・provider error・popup relay の browser 比較は未実行。
+- 2026-10-15、`4545a15` の local DEV / Orca 組込みブラウザでは client 未設定 error の戻る操作後も callback route が残った。追加確認では `b3f0ea5` の Chrome で同じ query なし route → error → `Back to Velvet Mac Studio` を実行し、`/import-export` の接続画面への遷移と、その後の Demo 接続を実測した（OAUTH-005）。Orca の先行観測をアプリ共通の戻る不具合と断定しない。実認証・provider error・popup relay の browser 比較は未実行。

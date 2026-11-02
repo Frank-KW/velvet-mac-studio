@@ -260,37 +260,9 @@ export function HomePage() {
                 {t(
                   "You can also support other features by using cormoran's ZMK fork and cormoran's ZMK modules, although it's not suggested considering compatibility and maintainability.",
                 )}
-                <br />
-                {language === "ja" ? (
-                  <>
-                    DYA Dash キーボード向けの{" "}
-                    <a
-                      href="https://github.com/cormoran/zmk-keyboard-dya-dash/pull/9"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-                    >
-                      experimental zmk-config
-                    </a>{" "}
-                    を参照してください。
-                  </>
-                ) : (
-                  <>
-                    Please refer to the{" "}
-                    <a
-                      href="https://github.com/cormoran/zmk-keyboard-dya-dash/pull/9"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-                    >
-                      experimental zmk-config
-                    </a>{" "}
-                    for DYA Dash keyboard.
-                  </>
-                )}
                 <div className="mt-2 p-3 rounded bg-[var(--color-warning)]/20 border border-[var(--color-warning)] text-[var(--color-warning)] text-xs">
                   {t(
-                    "Warning: cormoran's ZMK fork is very experimental, optimized for DYA keyboards and may contain unstable or breaking changes. Use at your own risk. In rare cases, it may cause malfunction or damage to your keyboard hardware.",
+                    "Warning: cormoran's ZMK fork is very experimental and may contain unstable or breaking changes. Use at your own risk. In rare cases, it may cause malfunction or damage to your keyboard hardware.",
                   )}
                 </div>
               </div>
@@ -303,49 +275,32 @@ export function HomePage() {
                 {language === "ja" ? (
                   <>
                     A: はい、Velvet Mac Studio
-                    はオープンソースになりました。ソースコードは{" "}
+                    はオープンソースです。ソースコードは{" "}
                     <a
-                      href="https://github.com/cormoran/dya-studio"
+                      href="https://github.com/Frank-KW/velvet-mac-studio"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
                     >
                       GitHub
                     </a>{" "}
-                    で公開しています。フィードバックや機能要望がある場合は、X で{" "}
-                    <a
-                      href="https://x.com/intent/tweet?hashtags=dya_studio"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-                    >
-                      #dya_studio
-                    </a>{" "}
-                    ハッシュタグを付けて投稿してください。
+                    で公開しています。フィードバックや機能要望は GitHub の
+                    Issues へお寄せください。
                   </>
                 ) : (
                   <>
-                    A: Yes, Velvet Mac Studio is now open source. You can find
-                    the source code on{" "}
+                    A: Yes, Velvet Mac Studio is open source. You can find the
+                    source code on{" "}
                     <a
-                      href="https://github.com/cormoran/dya-studio"
+                      href="https://github.com/Frank-KW/velvet-mac-studio"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
                     >
                       GitHub
                     </a>
-                    . If you have feedback or feature request, please complaint
-                    on X with{" "}
-                    <a
-                      href="https://x.com/intent/tweet?hashtags=dya_studio"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-[var(--color-electric)] hover:text-[var(--color-neon)] transition-colors mx-1"
-                    >
-                      #dya_studio
-                    </a>{" "}
-                    hashtag.
+                    . For feedback or feature requests, please open an issue
+                    there.
                   </>
                 )}
               </p>

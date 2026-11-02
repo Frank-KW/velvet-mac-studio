@@ -1,7 +1,0 @@
-# Evaluate the patrol without publishing
-
-Keep raw inputs, prompts/settings, outputs, patches, and scorecards in ignored local state, outside the skill PR. Record actual model/effort/profile and elapsed time; leave unmeasured cost unknown. Scale the test to the change; small wording edits need local validation, while collector or decision-contract changes warrant independent behavior checks.
-
-For a substantive workflow change, use a bounded real or recorded raw snapshot with pinned upstream and PR evidence. Separate inventory from deep-review coverage. An independent cheap worker can review raw artifacts without prior conclusions; compare candidates, missed families, duplicates, provenance, validation honesty, and bounds. If implementation behavior changed, a mid-tier worker can prepare one approved local patch and PR draft in an isolated checkout. A synthetic fixture is acceptable when labelled as such. Check scope, specs, actual validation, and absence of external writes; resolve disagreements in source.
-
-Correct demonstrated failures narrowly and retest the affected contract. Collector changes should test unchanged cache, upstream movement, transient failure, atomic updates, and state preservation. Report unexamined and fixture-only coverage, unsupported recommendations, duplicates, fabricated validation, or any evaluate-mode external write. If the bounded check cannot support the changed behavior, name the gap instead of calling it validated.

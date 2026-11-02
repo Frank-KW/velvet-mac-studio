@@ -34,7 +34,7 @@ const config: Config = {
     "^@keyboard-hub/abyss-client$": "<rootDir>/src/__mocks__/abyssClientSdk.ts",
     // Same story for the ZMK adapter. Its diff/compare helpers live in
     // @keyboard-hub/adapter-common and are covered by that repo's own test
-    // suite; what DYA Studio tests here is its wiring around them.
+    // suite; what this app tests here is its wiring around them.
     "^@keyboard-hub/adapter-zmk$": "<rootDir>/src/__mocks__/abyssAdapterZmk.ts",
     "^@keyboard-hub/adapter-common$":
       "<rootDir>/src/__mocks__/abyssAdapterCommon.ts",

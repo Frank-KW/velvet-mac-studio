@@ -1,11 +1,11 @@
 ---
 name: release-notes
-description: Curate DYA Studio's Upcoming notes from merged changes before a release, not during individual feature or fix PRs.
+description: Curate Velvet Mac Studio's Upcoming notes from merged changes before a release, not during individual feature or fix PRs.
 ---
 
 # Release notes
 
-Read [the release guide](../../../docs/RELEASE_GUIDE.md), `src/i18n/releaseNotes.json`, and [its schema](../../../src/i18n/releaseNotes.ts). Curate once after candidate changes merge and before **Release DYA Studio** is dispatched. This skill prepares notes; it does not publish a release.
+Read [the release guide](../../../docs/RELEASE_GUIDE.md), `src/i18n/releaseNotes.json`, and [its schema](../../../src/i18n/releaseNotes.ts). Curate once after candidate changes merge and before **Release Velvet Mac Studio** is dispatched. This skill prepares notes; it does not publish a release.
 
 ## Establish the range
 

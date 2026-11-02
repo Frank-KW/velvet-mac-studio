@@ -29,7 +29,7 @@ Record first use separately from warm use. Aim for one labeled first sample and 
 
 Maintain an operation ledger **while acting**: label, real control, page-clock start/end, interaction ID/duration, observed end state. Reset immediately before one action (for example editor open); read/save the probe before closing or starting the next action. Search, apply, Save, and Reload each need separate windows. The probe's `read()` returns `label`, `windowStart`, `now`, raw `records`, and maximum-duration `interactions` within the window, but cannot identify controls. Review one valid sample before repeating. If attribution is lost or late events contaminate the next window, mark samples unusable and rerun only that operation; never guess from the slowest group or the last N events.
 
-At least observe idle and repeated cycles for resources. Keep page sets fixed because DYA Studio retains visited tabs. If heap/CPU access fails, DOM counts are structural proxies only. Avoid concurrent timing workers, background tabs, profiler overhead, and one-sided CPU throttling. Label realistic-schema large fixtures synthetic; small Demo data cannot prove scale.
+At least observe idle and repeated cycles for resources. Keep page sets fixed because Velvet Mac Studio retains visited tabs. If heap/CPU access fails, DOM counts are structural proxies only. Avoid concurrent timing workers, background tabs, profiler overhead, and one-sided CPU throttling. Label realistic-schema large fixtures synthetic; small Demo data cannot prove scale.
 
 ## Attribution and change guards
 

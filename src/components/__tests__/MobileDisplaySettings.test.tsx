@@ -16,8 +16,8 @@ function renderSettings() {
 
 describe("MobileDisplaySettings", () => {
   beforeEach(() => {
-    localStorage.setItem("dya-studio-language", "en");
-    localStorage.setItem("dya-studio-theme", "light");
+    localStorage.setItem("velvet-mac-studio-language", "en");
+    localStorage.setItem("velvet-mac-studio-theme", "light");
   });
 
   afterEach(() => localStorage.clear());
@@ -34,11 +34,11 @@ describe("MobileDisplaySettings", () => {
       "dark",
     );
     expect(document.documentElement).toHaveClass("dark");
-    expect(localStorage.getItem("dya-studio-theme")).toBe("dark");
+    expect(localStorage.getItem("velvet-mac-studio-theme")).toBe("dark");
     await user.selectOptions(screen.getByLabelText("Language"), "ja");
     expect(screen.getByRole("dialog", { name: "表示設定" })).toBeVisible();
     expect(document.documentElement.lang).toBe("ja");
-    expect(localStorage.getItem("dya-studio-language")).toBe("ja");
+    expect(localStorage.getItem("velvet-mac-studio-language")).toBe("ja");
     await user.click(screen.getByRole("button", { name: "閉じる" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "表示設定" }));
@@ -61,7 +61,7 @@ describe("MobileDisplaySettings", () => {
       await user.selectOptions(select, theme);
       expect(select).toHaveValue(theme);
       expect(document.documentElement).toHaveClass(theme);
-      expect(localStorage.getItem("dya-studio-theme")).toBe(theme);
+      expect(localStorage.getItem("velvet-mac-studio-theme")).toBe(theme);
       expect(
         screen.getByRole("dialog", { name: "Display settings" }),
       ).toBeVisible();
@@ -92,6 +92,6 @@ describe("MobileDisplaySettings", () => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
     );
     await waitFor(() => expect(trigger).toHaveFocus());
-    expect(localStorage.getItem("dya-studio-theme")).toBe("dark");
+    expect(localStorage.getItem("velvet-mac-studio-theme")).toBe("dark");
   });
 });

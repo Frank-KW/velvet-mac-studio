@@ -1,6 +1,6 @@
 ---
 name: ai-operability-review
-description: Review DYA Studio pages through real browser tasks for agent usability and evidence-backed improvements. Use for requested AI operability audits, not ordinary regression testing.
+description: Review Velvet Mac Studio pages through real browser tasks for agent usability and evidence-backed improvements. Use for requested AI operability audits, not ordinary regression testing.
 ---
 
 # AI operability review

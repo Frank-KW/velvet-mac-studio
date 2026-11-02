@@ -73,7 +73,10 @@ describe("AbyssCallbackPage", () => {
     const handleRedirectCallback = jest.fn().mockResolvedValue({});
     mockClient(handleRedirectCallback);
     const onDone = jest.fn();
-    sessionStorage.setItem("dya-studio-abyss-return-path", "/import-export");
+    sessionStorage.setItem(
+      "velvet-mac-studio-abyss-return-path",
+      "/import-export",
+    );
 
     render(<AbyssCallbackPage onDone={onDone} />);
 

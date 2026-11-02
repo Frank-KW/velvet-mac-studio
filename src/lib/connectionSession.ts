@@ -1,6 +1,6 @@
 import type { ConnectionMethod } from "../contexts/DeviceConnectionContext";
 
-const CONNECTION_METHOD_STORAGE_KEY = "dya-studio:connection-method";
+const CONNECTION_METHOD_STORAGE_KEY = "velvet-mac-studio:connection-method";
 
 function storage(): Storage | null {
   try {

@@ -1,6 +1,6 @@
 ---
 name: exploratory-ui-test
-description: Run specification-driven DYA Studio browser exploration with AI subagents for requested focused regression checks, whole-app exploration, or substantial UI/shared-logic risk. Skip minor and documentation-only changes.
+description: Run specification-driven Velvet Mac Studio browser exploration with AI subagents for requested focused regression checks, whole-app exploration, or substantial UI/shared-logic risk. Skip minor and documentation-only changes.
 ---
 
 # Exploratory UI testing

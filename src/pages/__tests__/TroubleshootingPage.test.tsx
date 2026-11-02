@@ -157,7 +157,7 @@ describe("TroubleshootingPage", () => {
           moduleDirty: false,
           zephyrVersion: "3.7",
           buildTimestamp: "2026-01-01",
-          board: "dya_dash",
+          board: "demo_board",
         },
         hardware: {
           deviceId: "ABC123",
@@ -201,7 +201,7 @@ describe("TroubleshootingPage", () => {
 
     const notices = screen.getAllByText("Not available on this keyboard.");
     expect(notices).toHaveLength(3);
-    expect(screen.getByText("dya_dash")).toBeInTheDocument();
+    expect(screen.getByText("demo_board")).toBeInTheDocument();
     expect(screen.getByText("ABC123")).toBeInTheDocument();
   });
 

@@ -49,7 +49,7 @@ describe("Demo Transport", () => {
         expect(done).toBe(false);
         expect(Response.decode(value!).requestResponse).toMatchObject({
           requestId,
-          core: { getDeviceInfo: { name: "DYA Keyboard (Demo)" } },
+          core: { getDeviceInfo: { name: "Demo Keyboard" } },
         });
       } finally {
         transport.abortController.abort();

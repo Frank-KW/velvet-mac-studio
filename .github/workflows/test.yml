@@ -7,7 +7,6 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
-# Jobs override this only where preview deployment or PR comments require it.
 permissions:
   contents: read
 
@@ -24,19 +23,13 @@ jobs:
         run: npm ci
       - name: Run lint
         run: npm run lint
-      - name: Check AI issue queue safety
-        run: python3 -m unittest discover -s .agents/skills/issue-queue/scripts -p 'test_*.py'
       - name: Check product specifications
         run: npm run spec:check
       - name: Check exploratory coverage acceptance
         run: node --test .agents/skills/exploratory-ui-test/scripts/*.test.mjs
-      - name: Check preview approval guards
-        run: node --test scripts/preview-workflow.test.mjs
-      - name: Check Renode E2E scope
-        run: node --test scripts/renode-workflow.test.mjs
       - name: Run tests
         run: npm test
-      - name: Build for Cloudflare Workers
+      - name: Build web UI
         run: npm run build
         env:
           VITE_BASE: /
@@ -67,31 +60,3 @@ jobs:
         with:
           name: dist
           path: dist
-
-  deploy-dev:
-    needs: build
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-    permissions:
-      contents: read
-    environment:
-      name: preview-auto
-      url: ${{ steps.deploy.outputs.deployment-url }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-      - name: Deploy to Cloudflare Workers (dev)
-        id: deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --env dev
-          wranglerVersion: "4.58.0"

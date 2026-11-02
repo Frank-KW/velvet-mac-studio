@@ -18,7 +18,7 @@ afterEach(() => {
 });
 
 it("switches all themes without leaving stale classes and restores the saved choice", async () => {
-  localStorage.setItem("dya-studio-theme", "dark");
+  localStorage.setItem("velvet-mac-studio-theme", "dark");
   document.documentElement.classList.add("unrelated");
   const user = userEvent.setup();
   const view = renderSelector();
@@ -32,7 +32,7 @@ it("switches all themes without leaving stale classes and restores the saved cho
     expect(document.documentElement.className.split(" ").sort()).toEqual(
       [theme, "unrelated"].sort(),
     );
-    expect(localStorage.getItem("dya-studio-theme")).toBe(theme);
+    expect(localStorage.getItem("velvet-mac-studio-theme")).toBe(theme);
     expect(document.documentElement.style.colorScheme).toBe(
       theme === "dark" ? "dark" : "light",
     );
@@ -48,7 +48,7 @@ it("switches all themes without leaving stale classes and restores the saved cho
 it.each(["unknown", "pastel"])(
   "falls back to system preference for unsupported saved theme %s",
   (stored) => {
-    localStorage.setItem("dya-studio-theme", stored);
+    localStorage.setItem("velvet-mac-studio-theme", stored);
     renderSelector();
     expect(
       screen.queryByRole("menuitemradio", { name: "Pastel" }),
@@ -64,7 +64,7 @@ it.each(["unknown", "pastel"])(
 );
 
 it("opens on the selected theme, navigates without saving, and closes with focus restored", async () => {
-  localStorage.setItem("dya-studio-theme", "light");
+  localStorage.setItem("velvet-mac-studio-theme", "light");
   const user = userEvent.setup();
   renderSelector();
   const trigger = screen.getByRole("button", { name: "Theme" });
@@ -73,29 +73,29 @@ it("opens on the selected theme, navigates without saving, and closes with focus
   expect(screen.getByRole("menuitemradio", { name: "Light" })).toHaveFocus();
   await user.keyboard("{End}");
   expect(screen.getByRole("menuitemradio", { name: "Neutral" })).toHaveFocus();
-  expect(localStorage.getItem("dya-studio-theme")).toBe("light");
+  expect(localStorage.getItem("velvet-mac-studio-theme")).toBe("light");
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   expect(trigger).toHaveFocus();
   await user.click(trigger);
   await user.keyboard("{ArrowDown}{Enter}");
-  expect(localStorage.getItem("dya-studio-theme")).toBe("dark");
+  expect(localStorage.getItem("velvet-mac-studio-theme")).toBe("dark");
   expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   expect(trigger).toHaveFocus();
 });
 
 it("dismisses on an outside click without changing the selection", async () => {
-  localStorage.setItem("dya-studio-theme", "light");
+  localStorage.setItem("velvet-mac-studio-theme", "light");
   const user = userEvent.setup();
   renderSelector();
   await user.click(screen.getByRole("button", { name: "Theme" }));
   await user.click(document.body);
   expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-  expect(localStorage.getItem("dya-studio-theme")).toBe("light");
+  expect(localStorage.getItem("velvet-mac-studio-theme")).toBe("light");
 });
 
 it("requests fonts only for Pop and reuses the request across theme changes", async () => {
-  localStorage.setItem("dya-studio-theme", "light");
+  localStorage.setItem("velvet-mac-studio-theme", "light");
   const user = userEvent.setup();
   const view = renderSelector();
   const select = async (name: string) => {
@@ -127,7 +127,7 @@ it("requests fonts only for Pop and reuses the request across theme changes", as
 });
 
 it("loads saved Pop and retries a failed stylesheet on the next selection", async () => {
-  localStorage.setItem("dya-studio-theme", "pop");
+  localStorage.setItem("velvet-mac-studio-theme", "pop");
   const user = userEvent.setup();
   renderSelector();
   const link = document.getElementById("pop-theme-font");

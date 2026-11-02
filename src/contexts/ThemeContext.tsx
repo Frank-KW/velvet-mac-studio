@@ -21,7 +21,7 @@ const ThemeContext = createContext<ThemeContextValue>({
   setTheme: () => {},
 });
 
-const STORAGE_KEY = "dya-studio-theme";
+const STORAGE_KEY = "velvet-mac-studio-theme";
 
 function getInitialTheme(): Theme {
   // Check localStorage first

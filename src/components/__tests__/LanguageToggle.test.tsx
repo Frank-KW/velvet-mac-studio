@@ -11,7 +11,7 @@ function renderToggle() {
   );
 }
 
-beforeEach(() => localStorage.setItem("dya-studio-language", "en"));
+beforeEach(() => localStorage.setItem("velvet-mac-studio-language", "en"));
 afterEach(() => localStorage.clear());
 
 test("shows an icon-only trigger and persists a direct selection", async () => {
@@ -29,7 +29,7 @@ test("shows an icon-only trigger and persists a direct selection", async () => {
     expect(screen.queryByRole("menu")).not.toBeInTheDocument(),
   );
   expect(document.documentElement.lang).toBe("zh");
-  expect(localStorage.getItem("dya-studio-language")).toBe("zh");
+  expect(localStorage.getItem("velvet-mac-studio-language")).toBe("zh");
   await waitFor(() => expect(trigger).toHaveFocus());
   view.unmount();
   renderToggle();
@@ -49,12 +49,12 @@ test("moves keyboard focus without committing and supports Escape and Enter", as
   expect(screen.getByRole("menuitemradio", { name: "中文" })).toHaveFocus();
   await user.keyboard("{Home}{ArrowDown}");
   expect(screen.getByRole("menuitemradio", { name: "日本語" })).toHaveFocus();
-  expect(localStorage.getItem("dya-studio-language")).toBe("en");
+  expect(localStorage.getItem("velvet-mac-studio-language")).toBe("en");
   await user.keyboard("{Escape}");
   await waitFor(() => expect(trigger).toHaveFocus());
   expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   await user.keyboard("{Enter}{End}{Enter}");
-  expect(localStorage.getItem("dya-studio-language")).toBe("zh");
+  expect(localStorage.getItem("velvet-mac-studio-language")).toBe("zh");
 });
 
 test("outside click closes without changing language", async () => {
@@ -64,5 +64,5 @@ test("outside click closes without changing language", async () => {
   expect(screen.getByRole("menu")).toBeVisible();
   await user.click(document.body);
   expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-  expect(localStorage.getItem("dya-studio-language")).toBe("en");
+  expect(localStorage.getItem("velvet-mac-studio-language")).toBe("en");
 });

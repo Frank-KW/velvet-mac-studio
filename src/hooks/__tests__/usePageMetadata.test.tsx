@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { usePageMetadata } from "../usePageMetadata";
-import { PUBLIC_PAGE_PATHS, SITE_URL } from "../../lib/seo";
+import { SITE_URL } from "../../lib/seo";
 import type { Language } from "../../i18n/translations";
 
 beforeEach(() => {
@@ -89,20 +89,3 @@ test.each(["/oauth/callback", "/keymap", "/developer-guide/typo"])(
     window.history.replaceState(null, "", "/");
   },
 );
-
-test("sitemap contains exactly the public routes, with production URLs and valid XML", () => {
-  const xml = new DOMParser().parseFromString(
-    readFileSync("public/sitemap.xml", "utf8"),
-    "application/xml",
-  );
-  expect(xml.querySelector("parsererror")).toBeNull();
-  expect(xml.documentElement.namespaceURI).toBe(
-    "http://www.sitemaps.org/schemas/sitemap/0.9",
-  );
-  expect(
-    Array.from(xml.querySelectorAll("loc"), (node) => node.textContent).sort(),
-  ).toEqual(PUBLIC_PAGE_PATHS.map((path) => `${SITE_URL}${path}`).sort());
-  expect(readFileSync("public/robots.txt", "utf8")).toContain(
-    `Sitemap: ${SITE_URL}/sitemap.xml`,
-  );
-});

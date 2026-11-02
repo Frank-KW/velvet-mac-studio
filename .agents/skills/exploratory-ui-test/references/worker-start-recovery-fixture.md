@@ -1,7 +1,7 @@
 # Bounded worker-start recovery fixture
 
-This is the forward-test charter for [#357](https://github.com/cormoran/dya-studio/issues/357),
-an Orca integration workflow finding. It changes no DYA Studio requirement and
+This is the forward-test charter for [#357](https://github.com/Frank-KW/velvet-mac-studio/issues/357),
+an Orca integration workflow finding. It changes no Velvet Mac Studio requirement and
 defines no app spec IDs. Read the [integration guide](../../../../docs/spec/browser-tools/orca.md#worker-start-が-ready-表示と異なる結果を返す場合)
 and [evidence protocol](evidence-protocol.md) first. The installed CLI's recovery
 guide, runtime Task/Dispatch state, effects and residual resources are authoritative;

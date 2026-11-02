@@ -99,7 +99,7 @@ describe("App routing", () => {
     await waitFor(() => expect(window.location.pathname).toBe("/"));
     expect(
       document.querySelector<HTMLLinkElement>('link[rel="canonical"]')!.href,
-    ).toBe("https://studio.dya.cormoran.works/");
+    ).toBe("https://velvet-mac-studio.invalid/");
   });
 });
 
@@ -109,7 +109,7 @@ it("keeps metadata aligned with SPA navigation, history notifications, and unkno
   const guideTitle = document.title;
   expect(
     document.querySelector<HTMLLinkElement>('link[rel="canonical"]')!.href,
-  ).toBe("https://studio.dya.cormoran.works/developer-guide/modules/keymap");
+  ).toBe("https://velvet-mac-studio.invalid/developer-guide/modules/keymap");
   act(() => {
     window.history.pushState(null, "", "/release-notes#2026.09.20.0");
     window.dispatchEvent(new PopStateEvent("popstate"));
@@ -128,6 +128,6 @@ it("keeps metadata aligned with SPA navigation, history notifications, and unkno
   await waitFor(() =>
     expect(
       document.querySelector<HTMLLinkElement>('link[rel="canonical"]')!.href,
-    ).toBe("https://studio.dya.cormoran.works/"),
+    ).toBe("https://velvet-mac-studio.invalid/"),
   );
 });

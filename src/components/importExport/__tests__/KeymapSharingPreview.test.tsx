@@ -114,7 +114,7 @@ function Harness({
 }
 beforeEach(() => {
   jest.clearAllMocks();
-  localStorage.setItem("dya-studio-language", "en");
+  localStorage.setItem("velvet-mac-studio-language", "en");
 });
 it("starts with the visual preview, all layers expanded, and filters the list without hiding global changes", () => {
   render(<Harness />);

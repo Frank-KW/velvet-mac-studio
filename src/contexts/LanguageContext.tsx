@@ -12,7 +12,7 @@ import {
 } from "../i18n/translations";
 import { LanguageContext } from "./language";
 
-const STORAGE_KEY = "dya-studio-language";
+const STORAGE_KEY = "velvet-mac-studio-language";
 const LANGUAGE_CYCLE: Language[] = ["en", "ja", "zh"];
 
 function isLanguage(value: string | null): value is Language {

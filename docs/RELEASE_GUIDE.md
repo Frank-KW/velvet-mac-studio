@@ -1,8 +1,6 @@
 # Release & Release Notes Guide
 
-DYA Studio ships from `main` via a manually triggered release, and every release
-is recorded in the in-app **Release Notes** page
-(`https://studio.dya.cormoran.works/release-notes`).
+Every Velvet Mac Studio release is recorded in the in-app **Release Notes** page (`/release-notes`).
 
 ## Versioning
 
@@ -14,7 +12,7 @@ never set it by hand.
 ## How a release happens
 
 First complete and merge the dedicated release-notes PR described below. Then
-start the **Release DYA Studio** workflow (`.github/workflows/release.yml`)
+start the **Release Velvet Mac Studio** workflow (a release workflow (not present in this fork yet; the upstream one deployed to Cloudflare))
 manually (`workflow_dispatch`). It:
 
 1. Runs `node scripts/release.ts`, which resolves the next `YYYY.MM.DD.N` from
@@ -63,7 +61,7 @@ release candidate:
 3. Open one dedicated release-notes PR, validate it, and merge it after review
    and passing CI. If more feature or fix PRs merge before dispatch, reconcile
    the additional range into this preparation before proceeding.
-4. Dispatch **Release DYA Studio** only after those notes have merged. The
+4. Dispatch **Release Velvet Mac Studio** only after those notes have merged. The
    workflow promotes the prepared notes; it does not discover or summarize
    changes for you.
 

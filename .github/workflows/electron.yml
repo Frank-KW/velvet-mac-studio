@@ -1,8 +1,8 @@
 name: Build Desktop App
 
-# Desktop builds are sliced off the release that `release.yml` just published,
+# Desktop builds are sliced off a published release,
 # so the tag must already exist before this workflow can attach installers to
-# it. `release.yml` dispatches this workflow explicitly because GitHub does not
+# it. it can be dispatched by hand because GitHub does not
 # start another workflow for release events created with `GITHUB_TOKEN`. The
 # workflow definition comes from the default branch, while checkout uses the
 # requested release tag so older releases can be rebuilt with the current CI.
@@ -108,7 +108,7 @@ jobs:
           # which the GitHub CLI could infer the repository.
           GH_REPO: ${{ github.repository }}
           # The release was already created (with --notes pointing at the in-app
-          # release-notes page) by `.github/workflows/release.yml`; we only
+          # release-notes page); we only
           # upload the macOS .dmg and Windows .exe artifacts onto it.
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |

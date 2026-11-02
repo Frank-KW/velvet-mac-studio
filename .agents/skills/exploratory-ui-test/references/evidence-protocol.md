@@ -1,7 +1,7 @@
 # Evidence and review protocol
 
 Applies to focused and whole-app workers and their coordinator. This is the
-workflow correction for [#346](https://github.com/cormoran/dya-studio/issues/346),
+workflow correction for [#346](https://github.com/Frank-KW/velvet-mac-studio/issues/346),
 not a change to product requirements. All files below belong in a local temporary
 run directory; do not commit or publish raw browser/user evidence.
 

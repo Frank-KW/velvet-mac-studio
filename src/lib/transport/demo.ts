@@ -137,10 +137,10 @@ import {
   ANSI60,
   ORTHO,
   CORNE6,
-  DYA_DASH_ARROW,
-  DYA_DASH,
-  DYA2_ANSI,
-  DYA2_JIS,
+  DEMO_SPLIT_ARROW,
+  DEMO_SPLIT,
+  DEMO_ANSI,
+  DEMO_JIS,
 } from "../layouts";
 import { ErrorConditions } from "@zmkfirmware/zmk-studio-ts-client/meta";
 import { KEYBOARD_KEYCODES } from "../keycodes";
@@ -162,10 +162,10 @@ const ESC = 0xac;
  * Demo keyboard data
  */
 const LAYOUTS = [
-  DYA_DASH,
-  DYA_DASH_ARROW,
-  DYA2_ANSI,
-  DYA2_JIS,
+  DEMO_SPLIT,
+  DEMO_SPLIT_ARROW,
+  DEMO_ANSI,
+  DEMO_JIS,
   ANSI60,
   ORTHO,
   CORNE6,
@@ -176,8 +176,8 @@ const maxKeys = LAYOUTS.reduce(
 );
 const DEMO = {
   device: {
-    name: "DYA Keyboard (Demo)",
-    serialNumber: new Uint8Array([0x44, 0x59, 0x41, 0x44, 0x45, 0x4d, 0x4f]), // "DYADEMO"
+    name: "Demo Keyboard",
+    serialNumber: new Uint8Array([0x44, 0x45, 0x4d, 0x4f]), // "DEMO"
   },
   layouts: {
     activeLayoutIndex: 0,

@@ -3,7 +3,7 @@ import type { UnlockStep } from "../lib/unlockGuide";
 import { formatBehaviorBinding } from "../lib/behaviorMetadata";
 import { useLanguage } from "../hooks/useLanguage";
 
-// Reuse DYA's theme-aware accent colors and its tinted surface / accent border
+// Reuse the app's theme-aware accent colors and its tinted surface / accent border
 // treatment. Letters keep the guide usable without distinguishing the hues.
 const KEY_MARKERS = [
   { letter: "A", color: "cyan", accent: "var(--color-electric)" },

@@ -53,7 +53,7 @@ function show() {
 }
 beforeEach(() => {
   jest.clearAllMocks();
-  localStorage.setItem("dya-studio-language", "en");
+  localStorage.setItem("velvet-mac-studio-language", "en");
   mockAuth.isAuthenticated = false;
   mockAuth.user = null;
   mockSharing.current = null;

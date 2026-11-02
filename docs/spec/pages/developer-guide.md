@@ -41,7 +41,7 @@
 | GUIDE-004 | heading link / `On this page`                            | page content の heading id に `#id` anchor、desktop/mobile TOC を表示                                                  | browser hash scroll。content を変更しない                       | S3          |
 | GUIDE-005 | language 日本語/English、Theme dropdown                  | content definition、言語表示、現在のテーマ名と配色を切替（Light / Dark / Pop / Neutral）                               | language/theme persistence は app-shell の契約                  | S1/S2/S3/S4 |
 | GUIDE-006 | code/table/callout/image/flow/features/levels/link group | content type ごとに static rendering。`src` 不在 image は placeholder と alt/caption                                   | link は通常 anchor。external firmware/GitHub URL を開くのみ     | S2/S3       |
-| GUIDE-007 | previous/next、`Back to DYA Studio`                      | related page link または `/` link を表示。guide 内 link の click/Enter で URL・固有 H1・active href が遷移先へ更新する | guide 内は同一 SPA navigation。keyboard state を保存/破棄しない | S2/S3/S4    |
+| GUIDE-007 | previous/next、`Back to Velvet Mac Studio`               | related page link または `/` link を表示。guide 内 link の click/Enter で URL・固有 H1・active href が遷移先へ更新する | guide 内は同一 SPA navigation。keyboard state を保存/破棄しない | S2/S3/S4    |
 
 ## 代表ユーザーフロー
 

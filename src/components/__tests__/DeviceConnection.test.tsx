@@ -438,7 +438,10 @@ describe("DeviceConnection", () => {
   describe("Auto-reconnect on mount", () => {
     test("reconnects demo mode after a page reload", async () => {
       mocks.mockSuccessfulConnection({ deviceName: "Demo Keyboard" });
-      window.sessionStorage.setItem("dya-studio:connection-method", "demo");
+      window.sessionStorage.setItem(
+        "velvet-mac-studio:connection-method",
+        "demo",
+      );
 
       render(
         <DeviceConnectionProvider reconnectMinDisplayMs={0}>

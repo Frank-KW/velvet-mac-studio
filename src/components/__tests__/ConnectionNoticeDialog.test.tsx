@@ -198,7 +198,7 @@ describe("hasAcceptedNotice", () => {
     saveNoticeAcceptance("serial");
     expect(hasAcceptedNotice("serial")).toBe(true);
     mockLocalStorage.setItem(
-      "dya-studio-connection-notice-accepted-serial",
+      "velvet-mac-studio-connection-notice-accepted-serial",
       "0.9.0",
     );
     expect(hasAcceptedNotice("serial")).toBe(false);
@@ -213,7 +213,9 @@ describe("saveNoticeAcceptance", () => {
   test("saves acceptance to localStorage", () => {
     saveNoticeAcceptance("ble");
     expect(
-      mockLocalStorage.getItem("dya-studio-connection-notice-accepted-ble"),
+      mockLocalStorage.getItem(
+        "velvet-mac-studio-connection-notice-accepted-ble",
+      ),
     ).toBeTruthy();
   });
 });

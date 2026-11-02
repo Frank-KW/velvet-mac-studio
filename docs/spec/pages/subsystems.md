@@ -24,7 +24,7 @@
 ## 前提・状態
 
 - ready: `zmkApp.state.customSubsystems?.subsystems` を使用する。空または未取得は `No custom subsystems available...` を表示する。loading 専用表示はない。
-- supported: `SUPPORTED_SUBSYSTEM_IDENTIFIERS` にある既知 feature は折りたたみ `Already supported by DYA Studio` に置く。Keymap の Tapdances card が扱う `cormoran__runtime_tapdance` と、専用タブがない Fast Keymap も supported に分類する。firmware の index と `uiUrl` metadata は分類後もカードに表示する。
+- supported: `SUPPORTED_SUBSYSTEM_IDENTIFIERS` にある既知 feature は折りたたみ `Already supported by Velvet Mac Studio` に置く。Keymap の Tapdances card が扱う `cormoran__runtime_tapdance` と、専用タブがない Fast Keymap も supported に分類する。firmware の index と `uiUrl` metadata は分類後もカードに表示する。
 - unsupported: dedicated UI がない item を先に card 表示する。`uiUrl` が空なら `No web UI available for this subsystem.`。
 - Demo: 接続 label が `Demo` の場合だけ `Demo: Subsystem Toggles`。checkbox 変更は直ちに browser state を変えるが、advertisement の反映は Reconnect 後。
 - approved / unapproved: http / https の legacy entry だけを移行対象とし、承認済み URL は SHA-256 digest で保持する。不正 URL は legacy storage から除外されるが、card の metadata URL が invalid のときの link click 挙動は未検証。

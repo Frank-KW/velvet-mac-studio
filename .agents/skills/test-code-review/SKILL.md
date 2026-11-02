@@ -1,6 +1,6 @@
 ---
 name: test-code-review
-description: Review DYA Studio test quality for false passes, timing, duplication, and cost. Use only on explicit test-code review requests, never as routine feature or UI work; retain verified reusable findings.
+description: Review Velvet Mac Studio test quality for false passes, timing, duplication, and cost. Use only on explicit test-code review requests, never as routine feature or UI work; retain verified reusable findings.
 ---
 
 # Test code review
