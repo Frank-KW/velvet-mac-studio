@@ -10,6 +10,40 @@
       }
     },
     {
+      "version": "2026.11.26.0",
+      "date": "2026-11-26",
+      "changes": {
+        "major": [
+          {
+            "en": "See every Bluetooth profile slot the keyboard reports, including empty slots, on the Connection page.",
+            "ja": "接続ページに、空きスロットを含む、キーボードが報告するすべての Bluetooth プロファイルが表示されます。",
+            "zh": "连接页面会显示键盘报告的所有蓝牙配置槽位，包括空槽位。",
+            "pr": 1
+          },
+          {
+            "en": "See a reconnect warning when the Bluetooth session drops, including when switching profiles on the supported Velvet46 firmware leaves the old link open.",
+            "ja": "Bluetooth セッションが切断されると再接続の案内が表示されます。対応する Velvet46 ファームウェアで、プロファイルを切り替えても以前のリンクが残る場合も検出します。",
+            "zh": "蓝牙会话断开时会提示重新连接。使用受支持的 Velvet46 固件时，即使切换配置后旧蓝牙链路仍保持连接，也会检测到会话中断。",
+            "pr": 1
+          }
+        ],
+        "minor": [
+          {
+            "en": "Refreshed the app icon and simplified the welcome screen.",
+            "ja": "アプリアイコンを刷新し、起動画面をシンプルにしました。",
+            "zh": "更新了应用图标，简化了欢迎页面。"
+          }
+        ],
+        "patch": [
+          {
+            "en": "Bluetooth unpair and trackball settings failures now show the underlying error.",
+            "ja": "Bluetooth のペアリング解除やトラックボール設定に失敗したとき、エラーの詳細が表示されます。",
+            "zh": "蓝牙取消配对或轨迹球设置失败时会显示具体错误。"
+          }
+        ]
+      }
+    },
+    {
       "version": "2026.10.29.0",
       "date": "2026-10-29",
       "summary": {
