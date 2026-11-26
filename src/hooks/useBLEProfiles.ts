@@ -136,19 +136,27 @@ export function useBLEProfiles(): UseBLEProfilesReturn {
       try {
         const resp = await call(Request.create({ unpairProfile: { index } }));
 
-        if (resp) {
-          if (resp.unpairProfile?.success) {
-            await loadProfiles();
-          } else if (resp.error) {
-            setError(resp.error.message);
-          } else {
-            setError("Failed to unpair profile");
-          }
+        if (!resp) {
+          // The unlock gate may already have reported a cancelled unlock.
+          setError(
+            (current) =>
+              current ?? "Failed to unpair profile: No response from device",
+          );
+        } else if (resp.unpairProfile?.success) {
+          await loadProfiles();
+        } else {
+          setError(resp.error?.message || "Failed to unpair profile");
         }
       } catch (err) {
         console.error("Failed to unpair profile:", err);
+        const reason =
+          typeof err === "string"
+            ? err
+            : err instanceof Error
+              ? err.message
+              : "";
         setError(
-          `Failed to unpair profile: ${err instanceof Error ? err.message : "Unknown error"}`,
+          `Failed to unpair profile: ${reason.trim() || "Unknown error"}`,
         );
       } finally {
         setIsLoading(false);

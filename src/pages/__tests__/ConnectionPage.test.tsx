@@ -33,6 +33,7 @@ import { OutputPriority } from "../../proto/zmk/ble_management/ble_management";
 jest.mock("../../hooks/useBLEProfiles");
 jest.mock("../../hooks/useOsDetection");
 jest.mock("../../hooks/useDefaultLayer");
+jest.mock("../../hooks/useDeviceInfo");
 jest.mock("../../hooks/useLayerNames", () => ({
   ...jest.requireActual("../../hooks/useLayerNames"),
   useLayerNames: jest.fn(),
@@ -41,6 +42,7 @@ jest.mock("../../hooks/useLayerNames", () => ({
 import { useBLEProfiles } from "../../hooks/useBLEProfiles";
 import { useOsDetection } from "../../hooks/useOsDetection";
 import { useDefaultLayer } from "../../hooks/useDefaultLayer";
+import { useDeviceInfo } from "../../hooks/useDeviceInfo";
 import { useLayerNames } from "../../hooks/useLayerNames";
 
 const mockUseBLEProfiles = useBLEProfiles as jest.MockedFunction<
@@ -96,7 +98,7 @@ describe("ConnectionPage", () => {
   const defaultBLEReturn = {
     isAvailable: true,
     profiles: [] as typeof mockProfiles,
-    maxProfiles: 5,
+    maxProfiles: 0,
     isLoading: false,
     error: null,
     outputPriority: null,
@@ -106,6 +108,14 @@ describe("ConnectionPage", () => {
     setProfileName: jest.fn(),
     getOutputPriority: jest.fn(),
     setOutputPriority: jest.fn(),
+  };
+
+  const unavailableDeviceInfo = {
+    isAvailable: false,
+    info: null,
+    isLoading: false,
+    error: null,
+    refresh: jest.fn(),
   };
 
   const unavailableOsDetection = {
@@ -145,6 +155,7 @@ describe("ConnectionPage", () => {
     bleOverrides = {},
     osDetectionOverrides = {},
     defaultLayerOverrides = {},
+    deviceInfoOverrides = {},
   ) => {
     const connectionContext = {
       ...mockConnectionContext,
@@ -163,6 +174,10 @@ describe("ConnectionPage", () => {
       ...defaultLayerOverrides,
     });
 
+    jest.mocked(useDeviceInfo).mockReturnValue({
+      ...unavailableDeviceInfo,
+      ...deviceInfoOverrides,
+    });
     const mockZMKApp = createMockZMKApp();
 
     return render(
@@ -199,6 +214,28 @@ describe("ConnectionPage", () => {
       renderComponent({ isConnected: true }, { profiles: mockProfiles });
       expect(screen.getByText("Work Laptop")).toBeInTheDocument();
       expect(screen.getByText("Home PC")).toBeInTheDocument();
+    });
+
+    it("lists every reported slot and keeps missing details read-only", () => {
+      renderComponent(
+        { isConnected: true },
+        { profiles: mockProfiles, maxProfiles: 5 },
+      );
+
+      expect(screen.getByText("Work Laptop")).toBeVisible();
+      expect(screen.getByText("Home PC")).toBeVisible();
+      const openSlot = screen.getByText("Profile 2").closest(".glass-card");
+      expect(within(openSlot!).getByText("Not paired")).toBeVisible();
+
+      for (const index of [3, 4]) {
+        const slot = screen
+          .getByText(`BLE profile ${index}`)
+          .closest(".glass-card");
+        expect(within(slot!).getByText("Status unavailable")).toBeVisible();
+        expect(within(slot!).queryByRole("button")).not.toBeInTheDocument();
+      }
+      expect(screen.queryByText("BLE profile 5")).not.toBeInTheDocument();
+      expect(useDeviceInfo).toHaveBeenCalledWith(false);
     });
 
     it("should apply active profile styling", () => {
@@ -700,6 +737,56 @@ describe("ConnectionPage", () => {
   });
 
   describe("Graceful degradation", () => {
+    it("uses the device info count if BLE management is unavailable", async () => {
+      const refresh = jest.fn();
+      const loadProfiles = jest.fn();
+      renderComponent(
+        { isConnected: true },
+        { isAvailable: false, loadProfiles },
+        {
+          isAvailable: true,
+          state: {
+            usb: { connected: false, detected: Os.OS_UNSPECIFIED },
+            activeProfileIndex: 0,
+            currentEffective: Os.OS_MACOS,
+            bleProfiles: [
+              {
+                index: 1,
+                bonded: true,
+                connected: false,
+                detected: Os.OS_MACOS,
+                override: Os.OS_UNSPECIFIED,
+                effective: Os.OS_MACOS,
+              },
+            ],
+          },
+        },
+        {},
+        {
+          isAvailable: true,
+          info: { zmkConfig: { bleEnabled: true, bleProfileCount: 3 } },
+          refresh,
+        },
+      );
+
+      for (const index of [0, 1, 2]) {
+        expect(screen.getByText(`BLE profile ${index}`)).toBeVisible();
+      }
+      expect(screen.queryByText("BLE profile 3")).not.toBeInTheDocument();
+      expect(screen.getByText("Paired")).toBeVisible();
+      expect(screen.getAllByText("Status unavailable")).toHaveLength(2);
+      fireEvent.click(screen.getByRole("button", { name: "Refresh profiles" }));
+      await waitFor(() => expect(refresh).toHaveBeenCalledTimes(1));
+      expect(loadProfiles).not.toHaveBeenCalled();
+    });
+
+    it("does not invent slots when the firmware does not report a count", () => {
+      renderComponent({ isConnected: true }, { isAvailable: false });
+
+      expect(screen.queryByText(/BLE profile \d/)).not.toBeInTheDocument();
+      expect(screen.queryByText("Status unavailable")).not.toBeInTheDocument();
+    });
+
     it("still renders BLE rows derived from default-layer/os-detection when ble-management is unavailable", () => {
       renderComponent(
         { isConnected: true },

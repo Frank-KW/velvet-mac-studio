@@ -9,6 +9,9 @@ import userEvent from "@testing-library/user-event";
 import { DeviceConnectionProvider } from "../DeviceConnection";
 import { ConnectionContext } from "../../contexts/DeviceConnectionContext";
 import { StrictMode, useContext } from "react";
+import { connect as connectWebBluetooth } from "@zmkfirmware/zmk-studio-ts-client/transport/gatt";
+import type { RpcTransport } from "@zmkfirmware/zmk-studio-ts-client/transport/index";
+import { Response as DeviceInfoResponse } from "../../proto/zmk/device_info/device_info";
 import {
   useZMKApp,
   CONNECT_TIMEOUT_ERROR,
@@ -146,6 +149,7 @@ describe("DeviceConnection", () => {
 
   afterEach(() => {
     delete (navigator as NavigatorWithOptionalSerial).serial;
+    delete window.nativeBle;
     jest.useRealTimers();
     jest.restoreAllMocks();
   });
@@ -187,6 +191,176 @@ describe("DeviceConnection", () => {
         );
       },
     );
+
+    test.each(["native Bluetooth", "Web Bluetooth"])(
+      "clears the connected state when %s closes its reply stream",
+      async (transportKind) => {
+        const user = userEvent.setup();
+        let closeLink = () => {};
+        let pendingReply: Promise<unknown> | undefined;
+
+        if (transportKind === "native Bluetooth") {
+          window.nativeBle = {
+            connect: jest.fn().mockResolvedValue({ label: "Velvet46" }),
+            write: jest.fn().mockResolvedValue(undefined),
+            disconnect: jest.fn().mockResolvedValue(undefined),
+            onData: () => () => {},
+            onClosed: (onClosed) => {
+              closeLink = onClosed;
+              return () => {
+                closeLink = () => {};
+              };
+            },
+          };
+        } else {
+          jest.mocked(connectWebBluetooth).mockImplementation(async () => ({
+            ...mocks.mockTransport,
+            readable: new ReadableStream({
+              start(controller) {
+                closeLink = () => controller.close();
+              },
+            }),
+          }));
+        }
+
+        const { connection } = mocks.mockSuccessfulConnection({
+          deviceName: "Velvet46",
+        });
+        mocks.create_rpc_connection.mockImplementationOnce(
+          (transport: RpcTransport) => {
+            // The real client tees this stream into notifications and RPC replies.
+            const [notifications, replies] = transport.readable.tee();
+            pendingReply = replies.getReader().read();
+            return { ...connection, notification_readable: notifications };
+          },
+        );
+
+        render(
+          <DeviceConnectionProvider>
+            <TestComponent method="ble" />
+          </DeviceConnectionProvider>,
+        );
+        await user.click(screen.getByTestId("connect-button"));
+        await waitFor(() =>
+          expect(screen.getByTestId("connection-status")).toHaveTextContent(
+            "Connected",
+          ),
+        );
+
+        const consoleError = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        await act(async () => {
+          const failedReply = expect(pendingReply).rejects.toThrow(
+            "Bluetooth connection lost.",
+          );
+          closeLink();
+          await failedReply;
+        });
+        expect(screen.getByTestId("connection-status")).toHaveTextContent(
+          "Disconnected",
+        );
+        expect(
+          screen.queryByTestId("connection-method"),
+        ).not.toBeInTheDocument();
+        expect(screen.queryByTestId("device-name")).not.toBeInTheDocument();
+        expect(screen.getByTestId("error")).toHaveTextContent(
+          "Bluetooth connection lost.",
+        );
+        consoleError.mockRestore();
+
+        mocks.mockSuccessfulConnection({ deviceName: "Velvet46" });
+        await user.click(screen.getByTestId("connect-button"));
+        await waitFor(() =>
+          expect(screen.getByTestId("connection-status")).toHaveTextContent(
+            "Connected",
+          ),
+        );
+        expect(screen.queryByTestId("error")).not.toBeInTheDocument();
+      },
+    );
+
+    test("shows the disconnect reason when the live BLE stream stops replying without closing", async () => {
+      jest.useFakeTimers();
+      const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+      const consoleError = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      window.nativeBle = {
+        connect: jest.fn().mockResolvedValue({ label: "Velvet46" }),
+        write: jest.fn().mockResolvedValue(undefined),
+        disconnect: jest.fn().mockResolvedValue(undefined),
+        onData: () => () => {},
+        onClosed: () => () => {},
+      };
+      const { connection } = mocks.mockSuccessfulConnection({
+        deviceName: "Velvet46",
+        subsystems: [{ index: 4, identifier: "zmk__device_info" }],
+      });
+      let rpcSessionSignal: AbortSignal | undefined;
+      mocks.create_rpc_connection.mockImplementationOnce(
+        (transport: RpcTransport, options: { signal?: AbortSignal }) => {
+          rpcSessionSignal = options.signal;
+          const [notifications, replies] = transport.readable.tee();
+          return {
+            ...connection,
+            request_response_readable: replies,
+            notification_readable: notifications,
+          };
+        },
+      );
+      mocks.call_rpc
+        .mockResolvedValueOnce({
+          requestId: 2,
+          custom: {
+            call: {
+              payload: DeviceInfoResponse.encode(
+                DeviceInfoResponse.create({
+                  deviceInfo: {
+                    build: {
+                      board: "nice_nano",
+                      zmkVersion: "e5c9b69",
+                      moduleVersion: "8cedd2d",
+                      buildTimestamp: "2026-10-16T07:58:44Z",
+                    },
+                  },
+                }),
+              ).finish(),
+            },
+          },
+        })
+        .mockImplementationOnce(async (connection) => {
+          const reader = connection.request_response_readable.getReader();
+          try {
+            return (await reader.read()).value;
+          } finally {
+            reader.releaseLock();
+          }
+        });
+
+      render(
+        <DeviceConnectionProvider>
+          <TestComponent method="ble" />
+        </DeviceConnectionProvider>,
+      );
+      await user.click(screen.getByTestId("connect-button"));
+      await waitFor(() =>
+        expect(screen.getByTestId("connection-status")).toHaveTextContent(
+          "Connected",
+        ),
+      );
+
+      await act(async () => jest.advanceTimersByTimeAsync(16_000));
+
+      expect(screen.getByTestId("connection-status")).toHaveTextContent(
+        "Disconnected",
+      );
+      expect(screen.getByTestId("error")).toHaveTextContent(
+        "Bluetooth connection lost.",
+      );
+      expect(rpcSessionSignal?.aborted).toBe(true);
+      consoleError.mockRestore();
+    });
 
     test("disconnects from keyboard", async () => {
       const user = userEvent.setup();

@@ -261,6 +261,8 @@ const ja: Record<string, string> = {
     "キーボードからの応答がなく、接続がタイムアウトしました。\n接続状態とキーボードの ZMK Studio が有効になっていることを確認し、もう一度お試しください。",
   "Could not connect to the keyboard.\nCheck the connection and browser permissions, then try again.\nSee error details for more information.":
     "キーボードに接続できませんでした。\n接続状態とブラウザのアクセス権限を確認し、もう一度お試しください。\n詳しい原因は「エラーの詳細」で確認できます。",
+  "Bluetooth connection lost. Reconnect to the keyboard.":
+    "Bluetooth 接続が切断されました。キーボードに再接続してください。",
   "Error details": "エラーの詳細",
 
   "Inertia simulation": "慣性シミュレーション",
@@ -667,7 +669,9 @@ const ja: Record<string, string> = {
   "Cancel editing": "編集をキャンセル",
   "Edit name": "名前を編集",
   "Profile {{index}}": "プロファイル {{index}}",
+  Paired: "ペアリング済み",
   "Not paired": "ペアリングなし",
+  "Status unavailable": "状態を取得できません",
   "No address": "アドレスなし",
   Unpair: "ペアリング解除",
   Switch: "切り替え",
@@ -2012,6 +2016,8 @@ const zh: Record<string, string> = {
     "键盘未及时响应，连接已超时。\n请检查连接并确认键盘已启用 ZMK Studio，然后重试。",
   "Could not connect to the keyboard.\nCheck the connection and browser permissions, then try again.\nSee error details for more information.":
     "无法连接键盘。\n请检查连接和浏览器访问权限后重试。\n更多信息请查看错误详情。",
+  "Bluetooth connection lost. Reconnect to the keyboard.":
+    "蓝牙连接已断开。请重新连接键盘。",
   "Error details": "错误详情",
 
   "Inertia simulation": "惯性模拟",
@@ -2376,7 +2382,9 @@ const zh: Record<string, string> = {
   "Cancel editing": "取消编辑",
   "Edit name": "编辑名称",
   "Profile {{index}}": "配置文件 {{index}}",
+  Paired: "已配对",
   "Not paired": "未配对",
+  "Status unavailable": "状态不可用",
   "No address": "无地址",
   Unpair: "取消配对",
   Switch: "切换",

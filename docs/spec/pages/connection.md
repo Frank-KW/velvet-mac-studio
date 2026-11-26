@@ -6,28 +6,31 @@
 - 確認: 2026-09-20、`8627e4d`、コードと unit test の確認のみ。UI 実測はしていない。
 - 関連仕様: 接続の開始・再接続は [device session](../modules/device-session.md)、タブ可用性は [app shell](../modules/app-shell.md)。
 
-| 根拠 | ソース / symbol                                                                                                                    | 確認内容                                |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| S1   | [ConnectionPage](../../../src/pages/ConnectionPage.tsx): `ConnectionPage`, `reload`, `handleUnpair`, `confirmOutputPriorityChange` | page 操作、確認 dialog、結合カード      |
-| S2   | [BLE profiles hook](../../../src/hooks/useBLEProfiles.ts): `useBLEProfiles`                                                        | profile / output-priority RPC と再読込  |
-| S3   | [default layer hook](../../../src/hooks/useDefaultLayer.ts): `useDefaultLayer`                                                     | endpoint / OS layer state と書込み      |
-| S4   | [OS detection hook](../../../src/hooks/useOsDetection.ts): `useOsDetection`, `POLL_INTERVAL_MS`                                    | 5 秒 poll、BLE override                 |
-| S5   | [ConnectionPage tests](../../../src/pages/__tests__/ConnectionPage.test.tsx)                                                       | unavailable、結合カード、確認操作の根拠 |
+| 根拠 | ソース / symbol                                                                                                                    | 確認内容                                     |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| S1   | [ConnectionPage](../../../src/pages/ConnectionPage.tsx): `ConnectionPage`, `reload`, `handleUnpair`, `confirmOutputPriorityChange` | page 操作、確認 dialog、結合カード           |
+| S2   | [BLE profiles hook](../../../src/hooks/useBLEProfiles.ts): `useBLEProfiles`                                                        | profile / output-priority RPC と再読込       |
+| S3   | [default layer hook](../../../src/hooks/useDefaultLayer.ts): `useDefaultLayer`                                                     | endpoint / OS layer state と書込み           |
+| S4   | [OS detection hook](../../../src/hooks/useOsDetection.ts): `useOsDetection`, `POLL_INTERVAL_MS`                                    | 5 秒 poll、BLE override                      |
+| S5   | [ConnectionPage tests](../../../src/pages/__tests__/ConnectionPage.test.tsx)                                                       | unavailable、結合カード、確認操作の根拠      |
+| S6   | [Device info hook](../../../src/hooks/useDeviceInfo.ts): `useDeviceInfo`                                                           | BLE management がない場合の firmware slot 数 |
+| S7   | [Connection card merge](../../../src/lib/osDetection.ts): `mergeConnectionCards`                                                   | slot index、profile、endpoint の結合         |
 
 ## 機能要求
 
-| ID       | できるべきこと                                                                   | 出典・確度     |
-| -------- | -------------------------------------------------------------------------------- | -------------- |
-| CONN-R01 | 利用可能な接続 target ごとに profile と default layer を区別して管理できる       | S1–S3 から推定 |
-| CONN-R02 | OS detection が不確かな場合も、検出値と BLE override を混同せず確認・変更できる  | S1/S4 から推定 |
-| CONN-R03 | 接続断を招き得る output priority や unpair を明示確認の上で実行できる            | S1/S2 から推定 |
-| CONN-R04 | Output Priority を名前付きグループとして公開し、USB / BLE の選択状態を一意に示す | issue #215     |
+| ID       | できるべきこと                                                                   | 出典・確度                  |
+| -------- | -------------------------------------------------------------------------------- | --------------------------- |
+| CONN-R01 | 利用可能な接続 target ごとに profile と default layer を区別して管理できる       | S1–S3 から推定              |
+| CONN-R02 | OS detection が不確かな場合も、検出値と BLE override を混同せず確認・変更できる  | S1/S4 から推定              |
+| CONN-R03 | 接続断を招き得る output priority や unpair を明示確認の上で実行できる            | S1/S2 から推定              |
+| CONN-R04 | Output Priority を名前付きグループとして公開し、USB / BLE の選択状態を一意に示す | issue #215                  |
+| CONN-R05 | 利用可能な Bluetooth profile slot をすべて確認できる                             | 2026-11-26 ユーザー明示要求 |
 
 ## 前提・状態
 
 - 未接続: header は表示されるが、profile card、Refresh、Versions、設定操作は表示されない。接続開始は [device session](../modules/device-session.md) へ戻る。
 - loading: `Loading profiles...` または Refresh の spinner。hook は各 RPC 中に全操作を無効化する。default-layer と OS detection は各々別の availability / loading を持つ。
-- ready: BLE management、default layer、OS detection で得た情報を `mergeConnectionCards` で USB と BLE card に結合する。BLE management がなくても default-layer / OS-detection 由来の BLE 行は描画し得る（S5）。
+- ready: BLE management、device info、default layer、OS detection で得た情報を `mergeConnectionCards` で USB と BLE card に結合する。
 - unsupported: BLE management / default layer の未提供は各説明と導入モジュール URL を表示する。OS detection 非提供時は OS row を描画しない。
 - error: BLE hook の `error` は上部 alert に表示する。default-layer / OS detection の個別 error は ConnectionPage が明示表示しないため、画面復帰保証はない。
 
@@ -45,7 +48,7 @@ Popでは接続先カードの通常アイコン背景を淡い青（#e4f5ff）�
 
 | ID       | 前提 → 操作                                                                     | 観測できる結果                                                                                                                                                                                                                                 | 保存範囲・副作用                                                            | 根拠                 |
 | -------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
-| CONN-001 | 接続済み → `Refresh`                                                            | profile、priority、OS、default-layer、layer name を並列に再取得し、取得後 version を capture する                                                                                                                                              | 読込み。未保存変更を破棄するかは各 firmware RPC の契約で未確認              | S1 `reload`          |
+| CONN-001 | 接続済み → `Refresh`                                                            | 対応する BLE management の profile と priority、または代替の device info と、OS、default-layer、layer name を並列に再取得し、取得後 version を capture する                                                                                    | 読込み。未保存変更を破棄するかは各 firmware RPC の契約で未確認              | S1 `reload`          |
 | CONN-002 | BLE management 対応 → `USB` / `BLE` output priority を選ぶ → warning で Confirm | Output Priority は名前付き group、各選択肢は `aria-pressed` で現在値を示す。Cancel は現在値を維持し RPC を送らない。Confirm は set RPC の成功後に hook が再読込した値だけを選択済み表示へ反映し、失敗時は以前の選択を維持して alert を表示する | デバイス側設定。接続断時は手動 reconnect が必要と表示する                   | S1/S2                |
 | CONN-003 | pair 済み BLE profile → edit icon → 名を入力 → Save                             | 最大 31 文字の名前編集を送信し、成功時 profiles を再読込                                                                                                                                                                                       | デバイス側 profile 名。Cancel は入力 state を捨てて RPC を送らない          | S1/S2                |
 | CONN-004 | pair 済み BLE profile → `Unpair` → native confirm を承認                        | profile unpair RPC を送る。Cancel なら RPC を送らない                                                                                                                                                                                          | bond を消す破壊的操作。失敗時は上部 alert と再試行可能な card を残す        | S1 `handleUnpair`/S2 |
@@ -55,6 +58,10 @@ Popでは接続先カードの通常アイコン背景を淡い青（#e4f5ff）�
 | CONN-008 | default layer 対応 → Per-OS Default Layers の OS ごと select を選ぶ             | 選んだ OS の layer state を更新。endpoint が Follow OS detection のときに使う旨を表示                                                                                                                                                          | デバイス default-layer subsystem                                            | S1/S3                |
 | CONN-009 | OS detection 対応のまま待つ                                                     | `getState` を重複実行せず約 5 秒ごとに再取得する                                                                                                                                                                                               | poll のみ。検出の揺れは自動補正しない                                       | S4                   |
 | CONN-010 | Per-OS Default Layers をモバイル幅で表示する                                    | OS 名とアイコンは縮小・途中改行せず、各行の選択欄を同じ位置に揃える。選択欄は残り幅に収まり、高さは 44px 以上。デスクトップは従来の横並びを維持する                                                                                            | 表示のみ。CONN-008 の可用性・書込み契約は不変                               | S1                   |
+
+CONN-012: `Connection` は BLE management の `maxProfiles` で示された 0 始まりの全 slot を、既存の profile・endpoint と index で結合して昇順に表示する。BLE management 非対応時は BLE 有効の device info の `bleProfileCount` を使う。slot 数を取得できない場合は個別に報告された index のみ表示する。BLE management の詳細がない slot は OS detection の状態に応じて `Connected`、`Paired`、`Not paired` を表示し、状態の報告がなければ `Status unavailable` を表示する。その slot には BLE management の書込み操作を表示しない。slot を表示するだけでは設定を書き換えない（S1/S2/S5/S6/S7）。
+
+CONN-013: `Unpair` が失敗して接続が継続していれば、firmware のエラー文または RPC が返したエラー詳細を上部の警告に表示する。RPC が文字列を throw した場合も原文を残す。応答が空の場合は `Failed to unpair profile: No response from device` を表示する。unlock の中止は既存の lock メッセージを維持する。Bluetooth が切断された場合は [SESSION-017](../modules/device-session.md) に従って接続画面に切断理由を表示する（2026-11-26 ユーザー明示要求、S1/S2）。
 
 ## 代表ユーザーフロー
 
@@ -75,6 +82,12 @@ Popでは接続先カードの通常アイコン背景を淡い青（#e4f5ff）�
 1. `Unpair` を選び、native confirm を Cancel する。profile 状態が変わらないことを確認する。
 2. output priority を変更し warning を Cancel する。選択済み priority が変わらないことを確認する。
 3. 実機では Confirm / unpair を勝手に実行しない。実施時は再接続手段を先に記録する。
+
+### F4: 全 Bluetooth profile slot を確認する（CONN-012）
+
+1. `Connection` を開き、firmware の slot 数と `Connections` の BLE slot が一致することを確認する。
+2. slot 数のみを報告する firmware または mock を使い、詳細がない slot に `Status unavailable` が表示され、BLE management の操作が出ないことを確認する。
+3. `Refresh` 後も slot が重複せず、名前と状態が同じ index に対応することを確認する。
 
 ## 不変条件
 

@@ -56,19 +56,15 @@ export function protoOsToZmkOs(protoOs: Os): number {
 /** The raw zmk_os values enumerated by the default-layer per-OS section (0..5). */
 export const ZMK_OS_VALUES = [0, 1, 2, 3, 4, 5];
 
-export interface ConnectionCard {
-  /** default-layer endpoint index (1-based; USB then BLE profiles), if known. */
+export type ConnectionCard = {
+  /** Default-layer endpoint index (1-based; USB then BLE profiles), if known. */
   endpointIndex?: number;
-  /** True when this card represents the USB endpoint. */
-  isUsb: boolean;
-  /** BLE profile index, when this card represents a BLE connection. */
-  bleProfileIndex?: number;
-  /** Human readable label, e.g. device name or "BLE profile N". */
   label: string;
-}
+} & ({ isUsb: true } | { isUsb: false; bleProfileIndex: number });
 
 export interface MergeCardsInput {
   bleProfiles?: { index: number; name: string }[];
+  bleProfileCount?: number;
   defaultLayerEndpoints?: {
     index: number;
     isUsb: boolean;
@@ -89,6 +85,7 @@ export interface MergeCardsInput {
 export function mergeConnectionCards(input: MergeCardsInput): ConnectionCard[] {
   const {
     bleProfiles = [],
+    bleProfileCount = 0,
     defaultLayerEndpoints = [],
     osDetectionBleProfiles = [],
   } = input;
@@ -108,8 +105,11 @@ export function mergeConnectionCards(input: MergeCardsInput): ConnectionCard[] {
     });
   }
 
-  // Collect the union of known BLE profile indices across all sources.
+  // A reported count also identifies slots with no profile details.
   const bleIndices = new Set<number>();
+  for (let index = 0; index < bleProfileCount; index++) {
+    bleIndices.add(index);
+  }
   bleProfiles.forEach((p) => bleIndices.add(p.index));
   defaultLayerEndpoints
     .filter((e) => !e.isUsb)
