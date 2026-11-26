@@ -1,5 +1,10 @@
+export const BLUETOOTH_CONNECTION_LOST = "Bluetooth connection lost.";
+
 /** Map transport wording at the presentation boundary; retain the raw error for diagnostics. */
 export function connectionErrorMessage(error: string): string {
+  if (error === BLUETOOTH_CONNECTION_LOST) {
+    return "Bluetooth connection lost. Reconnect to the keyboard.";
+  }
   if (
     /failed to (?:open (?:the )?(?:serial port|webusb device)|claim the CDC interface)|port.*already open|device.*in use/i.test(
       error,

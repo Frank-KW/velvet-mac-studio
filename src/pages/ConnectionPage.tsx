@@ -19,6 +19,7 @@ import { VersionDiffModal } from "../components/versionHistory/VersionDiffModal"
 import { useConnectionVersionHistory } from "../hooks/versionHistory/useConnectionVersionHistory";
 import { useOsDetection } from "../hooks/useOsDetection";
 import { useDefaultLayer } from "../hooks/useDefaultLayer";
+import { useDeviceInfo } from "../hooks/useDeviceInfo";
 import { useLayerNames, layerLabel } from "../hooks/useLayerNames";
 import { ConnectionContext } from "../contexts/DeviceConnectionContext";
 import { OutputPriority } from "../proto/zmk/ble_management/ble_management";
@@ -53,6 +54,7 @@ export function ConnectionPage() {
   const {
     isAvailable,
     profiles,
+    maxProfiles,
     isLoading,
     error,
     outputPriority,
@@ -63,6 +65,15 @@ export function ConnectionPage() {
     getOutputPriority,
     setOutputPriority,
   } = bleProfiles;
+
+  const deviceInfo = useDeviceInfo(!isAvailable);
+  const bleConfig = deviceInfo.isAvailable
+    ? deviceInfo.info?.zmkConfig
+    : undefined;
+  const bleProfileCount = isAvailable
+    ? maxProfiles
+    : (bleConfig?.bleEnabled && bleConfig.bleProfileCount) || 0;
+  const isReadingProfiles = isLoading || (!isAvailable && deviceInfo.isLoading);
 
   const osDetection = useOsDetection();
   const defaultLayer = useDefaultLayer();
@@ -133,8 +144,8 @@ export function ConnectionPage() {
 
   const reload = async () => {
     await Promise.all([
-      loadProfiles(),
-      getOutputPriority(),
+      ...(isAvailable ? [loadProfiles(), getOutputPriority()] : []),
+      ...(!isAvailable && deviceInfo.isAvailable ? [deviceInfo.refresh()] : []),
       osDetection.load(),
       defaultLayer.load(),
       loadLayerNames(),
@@ -147,10 +158,16 @@ export function ConnectionPage() {
     () =>
       mergeConnectionCards({
         bleProfiles: profiles,
+        bleProfileCount,
         defaultLayerEndpoints: defaultLayer.state?.endpoints,
         osDetectionBleProfiles: osDetection.state?.bleProfiles,
       }),
-    [profiles, defaultLayer.state?.endpoints, osDetection.state?.bleProfiles],
+    [
+      profiles,
+      bleProfileCount,
+      defaultLayer.state?.endpoints,
+      osDetection.state?.bleProfiles,
+    ],
   );
 
   const showStatusStrip = osDetection.isAvailable || defaultLayer.isAvailable;
@@ -216,12 +233,12 @@ export function ConnectionPage() {
                   )}
                   className="btn-ghost flex items-center gap-2"
                   onClick={() => void reload()}
-                  disabled={isLoading}
+                  disabled={isReadingProfiles}
                   aria-label={t("Refresh profiles")}
                 >
                   <IconRefresh
                     size={16}
-                    className={isLoading ? "animate-spin" : ""}
+                    className={isReadingProfiles ? "animate-spin" : ""}
                   />
                 </ResponsiveButton>
                 <ResetVersionMenu
@@ -406,12 +423,14 @@ export function ConnectionPage() {
         {/* Connections Section */}
         {connection.isConnected && (
           <>
-            {isAvailable && isLoading && profiles.length === 0 && (
-              <LoadingIndicator
-                className="mb-4"
-                label={t("Loading profiles...")}
-              />
-            )}
+            {isReadingProfiles &&
+              profiles.length === 0 &&
+              bleProfileCount === 0 && (
+                <LoadingIndicator
+                  className="mb-4"
+                  label={t("Loading profiles...")}
+                />
+              )}
 
             {cards.length > 0 && (
               <div className="mb-3">
@@ -521,10 +540,6 @@ export function ConnectionPage() {
                 const endpoint = defaultLayer.state?.endpoints.find(
                   (e) => !e.isUsb && e.bleProfileIndex === card.bleProfileIndex,
                 );
-                const isPaired = profile
-                  ? !profile.isOpen
-                  : !!osProfile?.bonded;
-
                 if (profile) {
                   // Full ble-management card, extended with OS/layer controls.
                   return (
@@ -758,8 +773,17 @@ export function ConnectionPage() {
                   );
                 }
 
-                // ble-management unavailable/missing this profile: simple row
-                // derived from default-layer / os-detection so config still works.
+                const profileLabel = t("BLE profile {{index}}", {
+                  index: card.bleProfileIndex,
+                });
+                let profileStatus = "Status unavailable";
+                if (osProfile) {
+                  profileStatus = osProfile.connected
+                    ? "Connected"
+                    : osProfile.bonded
+                      ? "Paired"
+                      : "Not paired";
+                }
                 return (
                   <div
                     key={`ble-${card.bleProfileIndex}`}
@@ -775,10 +799,10 @@ export function ConnectionPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-[var(--color-text-secondary)]">
-                            {card.label}
+                            {profileLabel}
                           </p>
                           <p className="text-xs text-[var(--color-text-muted)]">
-                            {isPaired ? t("Connected") : t("Not paired")}
+                            {t(profileStatus)}
                           </p>
                         </div>
                       </div>
@@ -798,7 +822,7 @@ export function ConnectionPage() {
                           allowOsDetection
                           disabled={defaultLayer.isLoading}
                           aria-label={t("{{connection}} default layer", {
-                            connection: card.label,
+                            connection: profileLabel,
                           })}
                           onChange={(value) =>
                             defaultLayer.setEndpointLayer(endpoint.index, value)

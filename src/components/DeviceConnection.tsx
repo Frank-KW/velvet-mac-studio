@@ -15,6 +15,9 @@ import {
   isNativeBleAvailable,
 } from "../lib/transport/nativeBle";
 import { connect as connectDemo } from "../lib/transport/demo";
+import { BLUETOOTH_CONNECTION_LOST } from "../lib/connectionError";
+import { watchVelvetBluetooth } from "../lib/transport/velvetBluetoothWatch";
+import { DEVICE_INFO_SUBSYSTEM_IDENTIFIER } from "../hooks/useDeviceInfo";
 import {
   resolveCustomSubsystemIdentifier,
   withLoggedNotifications,
@@ -76,6 +79,8 @@ export function DeviceConnectionProvider({
   const zmkApp = useZMKApp({ connectTimeoutMs });
   const [isReconnecting, setIsReconnecting] = useState(false);
   const [connectionMethod, setConnectionMethod] = useState<ConnectionMethod>();
+  const [bluetoothError, setBluetoothError] = useState<string | null>(null);
+  const bluetoothAttemptRef = useRef<AbortController | null>(null);
 
   // Dev-only: log every notification pushed from the device, mirroring the RPC
   // logging that wraps outbound calls. Wrap the shared `zmkApp` once here so all
@@ -213,11 +218,70 @@ export function DeviceConnectionProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const bluetoothConnection =
+    connectionMethod === "ble" ? zmkApp.state.connection : null;
+  const keyboardName = zmkApp.state.deviceInfo?.name;
+  const deviceInfoSubsystem = zmkApp.state.customSubsystems?.subsystems.find(
+    (subsystem) => subsystem.identifier === DEVICE_INFO_SUBSYSTEM_IDENTIFIER,
+  )?.index;
+  const lastPacketMs = zmkApp.lastPacketMs;
+
+  useEffect(() => {
+    const attempt = bluetoothAttemptRef.current;
+    if (
+      !bluetoothConnection ||
+      !attempt ||
+      keyboardName !== "Velvet46" ||
+      deviceInfoSubsystem === undefined
+    )
+      return;
+
+    return watchVelvetBluetooth(
+      bluetoothConnection,
+      deviceInfoSubsystem,
+      lastPacketMs,
+      () => {
+        if (bluetoothAttemptRef.current !== attempt) return;
+        setBluetoothError(BLUETOOTH_CONNECTION_LOST);
+        // Fail the reply stream so the SDK releases any outstanding RPC and
+        // goes through its normal disconnect cleanup.
+        attempt.abort(new Error(BLUETOOTH_CONNECTION_LOST));
+      },
+    );
+  }, [bluetoothConnection, deviceInfoSubsystem, keyboardName, lastPacketMs]);
+
   const handleConnect = useCallback(
     async (method: ConnectionMethod) => {
+      const bluetoothAttempt = method === "ble" ? new AbortController() : null;
+      bluetoothAttemptRef.current = bluetoothAttempt;
+      setBluetoothError(null);
+
       let connectFn: () => Promise<RpcTransport>;
-      if (method === "ble") {
-        connectFn = isNativeBleAvailable() ? connectNativeBLE : connectBLE;
+      if (bluetoothAttempt) {
+        const openBluetooth = isNativeBleAvailable()
+          ? connectNativeBLE
+          : connectBLE;
+        connectFn = async () => {
+          const transport = await openBluetooth();
+          const readable = transport.readable.pipeThrough(
+            new TransformStream<Uint8Array, Uint8Array>({
+              flush() {
+                if (
+                  bluetoothAttemptRef.current !== bluetoothAttempt ||
+                  transport.abortController.signal.aborted
+                )
+                  return;
+
+                setBluetoothError(BLUETOOTH_CONNECTION_LOST);
+                // Both BLE transports end the stream on a link drop. An error
+                // releases pending RPCs and makes useZMKApp tear down the session.
+                throw new Error(BLUETOOTH_CONNECTION_LOST);
+              },
+            }),
+            { signal: bluetoothAttempt.signal },
+          );
+          return { ...transport, readable };
+        };
       } else if (method === "demo") {
         connectFn = connectDemo;
       } else {
@@ -240,6 +304,8 @@ export function DeviceConnectionProvider({
   );
 
   const handleDisconnect = useCallback(() => {
+    bluetoothAttemptRef.current = null;
+    setBluetoothError(null);
     clearSavedConnectionMethod();
     setConnectionMethod(undefined);
     zmkApp.disconnect();
@@ -262,7 +328,7 @@ export function DeviceConnectionProvider({
     onConnect: handleConnect,
     onDisconnect: handleDisconnect,
     isLoading: zmkApp.state.isLoading,
-    error: zmkApp.state.error,
+    error: bluetoothError ?? zmkApp.state.error,
     isReconnecting,
     onCancelReconnect: handleCancelReconnect,
   };

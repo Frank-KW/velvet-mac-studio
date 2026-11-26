@@ -62,6 +62,10 @@ PopのsplashではUSBをスカイブルー、BLEをミント、Demoをクリー�
 
 - SESSION-016: splash の開発者ガイド・リリースノートは、それぞれ `/developer-guide`・`/release-notes` の `href` を持つ通常リンクとして表示する。通常の左クリックのみ既存 SPA navigation を使い、Ctrl / Command / Shift / Alt を伴うクリックと中クリックは browser の標準動作を妨げない。リンク先のコピー・別タブ表示ができる。表示順・テーマのクラス・接続処理は SESSION-013 のまま。根拠: ユーザー明示要求（2026-10-18）、[issue #303](https://github.com/cormoran/dya-studio/issues/303)、S4 `navigateLink`。検索メタ情報は [SHELL-018–020](app-shell.md) を参照する。
 
+- SESSION-017: 接続中の native macOS Bluetooth / Web Bluetooth の受信ストリームが切断で終了すると、保留中の RPC は `Bluetooth connection lost.` で失敗し、接続済み画面とデバイス名を取り下げる。接続画面に `Bluetooth connection lost. Reconnect to the keyboard.` を表示する。次の明示接続で切断メッセージを消す。手動の `Disconnect` は正常終了として扱う（2026-11-26 ユーザー明示要求、S2 `handleConnect` と `handleDisconnect`、S4、S6）。
+
+- SESSION-018: Studio locking を無効にした確認済みの Velvet46 factory build では、BLE profile を切り替えて旧 host のリンクが残る場合に備え、6 秒を上限とする read-only RPC を約 5 秒間隔で送る。応答が途絶えたら SESSION-017 と同じ切断理由を表示する。既存の RPC が動作中は probe を送らず、受信が 30 秒途絶えた場合に切断する。build を確認できない場合や lock 状態が返る場合は定期 probe を終了する（2026-11-26 ユーザー明示要求、S2、[watchVelvetBluetooth](../../../src/lib/transport/velvetBluetoothWatch.ts)）。
+
 ## 代表ユーザーフロー
 
 ### F1: explicit Demo 接続と切断（SESSION-002/003/007）

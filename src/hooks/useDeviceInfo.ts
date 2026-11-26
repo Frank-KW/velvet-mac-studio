@@ -21,7 +21,7 @@ export interface UseDeviceInfoReturn {
   refresh: () => Promise<void>;
 }
 
-export function useDeviceInfo(): UseDeviceInfoReturn {
+export function useDeviceInfo(enabled = true): UseDeviceInfoReturn {
   const { subsystem, ready, call } = useCustomSubsystem(
     DEVICE_INFO_SUBSYSTEM_IDENTIFIER,
     CODEC,
@@ -55,10 +55,10 @@ export function useDeviceInfo(): UseDeviceInfoReturn {
 
   // Auto-fetch when the subsystem becomes available.
   useEffect(() => {
-    if (ready) {
+    if (enabled && ready) {
       void refresh();
     }
-  }, [ready, refresh]);
+  }, [enabled, ready, refresh]);
 
   return {
     isAvailable: subsystem !== null,
